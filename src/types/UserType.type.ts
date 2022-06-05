@@ -1,14 +1,7 @@
 
 
 
-
-// imports
-import { Session } from "express-session";
-
-
-
-
-
+// user type
 export type UserType = {
      _id: string,
      firstName: string,
@@ -16,12 +9,11 @@ export type UserType = {
      email: string,
      password: string,
      createdAt: string,
-     updatedAt: string
-}
-
-
-
-
-export interface UserSession extends Session { 
-     visits?: number 
+     updatedAt: string,
+     posts?: string[],
+     likedPosts?: string[],
+     repostedPosts?: string[],
+     comments: string[],
+     connections: string[],
+     uploads: string[]
 }

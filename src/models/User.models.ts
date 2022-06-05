@@ -8,6 +8,7 @@ import Log from "../config/bunyan.config";
 import { UserType } from '../types/UserType.type';
 
 
+// schema
 const UserSchema = new mongoose.Schema({
      firstName: {
           type: String,
@@ -48,6 +49,14 @@ const UserSchema = new mongoose.Schema({
      comments: [{
           type: mongoose.Schema.Types.ObjectId,
           ref: 'comments'
+     }],
+     connections: [{
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'users'
+     }],
+     uploads: [{
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'images'
      }]
 }, {timestamps: true});
 
