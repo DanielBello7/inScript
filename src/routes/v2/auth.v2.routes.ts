@@ -2,7 +2,14 @@
 
 
 // imports
-import { CreateAccount, GetSingleUser, GetUsers, LogoutUser, GetCurrentUser, LoginUserV2 } from '../../controllers/auth.controller';
+import { 
+     CreateAccount, 
+     GetSingleUser, 
+     GetUsers, 
+     LogoutUser, 
+     GetCurrentUser, 
+     LoginUserV2 
+} from '../../controllers/auth.controller';
 import { authenticateToken } from '../../middlewares/authenticate';
 import { check } from 'express-validator';
 import express from 'express';

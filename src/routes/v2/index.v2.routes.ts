@@ -2,33 +2,36 @@
 
 
 // imports
-import express from "express";
-import img from "./imageUpload.v2.routes";
-import auth from './auth.v2.routes';
-import posts from './posts.v2.routes';
 import comments from './comments.v2.routes';
+import img from "./imageUpload.v2.routes";
+import users from './users.v2.routes';
+import posts from './posts.v2.routes';
+import auth from './auth.v2.routes';
+import express from "express";
 
 
+// create router
 const router = express.Router();
 
 
-
-
-// routes handles
+// main export
 export default () => {
 
-
+     // router for authorization
      router.use('/auth', auth());
 
+     // router for users
+     router.use('/users', users());
 
-     router.use('/img', img());
+     // router for images
+     router.use('/imgs', img());
 
-
+     // router for posts
      router.use('/posts', posts());
 
-
+     // router for comments
      router.use('/comments', comments());
 
-
-  return router;
+     // default return
+     return router;
 }

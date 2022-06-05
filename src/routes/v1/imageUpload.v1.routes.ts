@@ -2,34 +2,27 @@
 
 
 // imports
-import { GetImage, UploadImage} from '../../controllers/upload.controller';
+import { 
+     GetImage, 
+     UploadImage 
+} from '../../controllers/upload.controller';
 import { authenticate } from '../../middlewares/authenticate';
 import express from 'express';
 
+// create router
 const router = express.Router();
 
 
-
+// main export
 export default () => {
-  
+     
+     // route for getting images ---[GET]
+     router.get('/:img', authenticate, GetImage);   
+     
+     
+     // route for uploading ---[POST]
+     router.post('/upload', authenticate, UploadImage);
 
 
-  
-  
-  // handles sending of image files from the server ---- [GET]
-  router.get('/:img', authenticate, GetImage);
-
-  
-  
-  
-  
-  // handles uploading of only images to the server ---- [POST]
-  router.post('/upload', authenticate, UploadImage);
-
-  
-  
-  
-  
-  
-  return router;
+     return router;
 }

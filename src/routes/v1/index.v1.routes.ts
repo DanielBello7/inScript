@@ -2,26 +2,24 @@
 
 
 // imports
-import express from "express";
 import img from "./imageUpload.v1.routes";
+import express from "express";
 import auth from './auth.v1.routes';
 
-
-
-
+// create router
 const router = express.Router();
 
-
-
-
-// routes handles
+// main export
 export default () => {
 
+     // route for authorization
      router.use('/auth', auth());
 
 
+     // route for uploads
      router.use('/img', img());
 
 
+     // return
      return router;
 }
