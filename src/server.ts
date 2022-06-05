@@ -8,7 +8,7 @@ import compression from 'compression';
 import path from 'path';
 import cors from 'cors';
 import upload from 'express-fileupload';
-import { HandleError } from './middlewares/handleError';
+import { HandleIconError } from './middlewares/ErrorHandlers';
 
 
 
@@ -33,7 +33,7 @@ function ServerApp() {
      app.use(express.urlencoded({extended: true}));
 
 
-     app.use(HandleError);
+     app.use(HandleIconError);
      app.use('/api', api());
 
 
