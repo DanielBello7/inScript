@@ -1,6 +1,7 @@
 
 
 
+// imports
 import bunyan from 'bunyan';
 import path from 'path';
 
@@ -30,5 +31,5 @@ const Log = bunyan.createLogger({
 
 
 
-
+// main export
 export default Log;
