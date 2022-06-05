@@ -1,9 +1,11 @@
 
 
 
+// imports
 import mongoose from "mongoose";
 
 
+// schema
 const CommentSchema = new mongoose.Schema({
      text: {
           type: String,
@@ -26,6 +28,9 @@ const CommentSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 
+// model
 const CommentModel = mongoose.model('comments', CommentSchema);
 
-export { CommentModel }
+
+// main export
+export default CommentModel;

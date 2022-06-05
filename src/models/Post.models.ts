@@ -1,12 +1,14 @@
 
 
 
+// imports
 import mongoose from "mongoose";
 
-
+// schema
 const PostSchema = new mongoose.Schema({
      text: {
           type: String,
+          required: false
      },
      createdBy: {
           type: mongoose.Schema.Types.ObjectId,
@@ -27,7 +29,7 @@ const PostSchema = new mongoose.Schema({
      },
      repostedBy: [{
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'users'  
+          ref: 'users'
      }],
      postType: {
           type: String,
@@ -39,11 +41,18 @@ const PostSchema = new mongoose.Schema({
      comments: [{
           type: mongoose.Schema.Types.ObjectId,
           ref: 'comments'
-     }]
+     }],
+     media: {
+          type: String,
+          required: false
+     }
 
 }, {timestamps: true});
 
 
+// model
 const PostModel = mongoose.model('posts', PostSchema);
 
-export { PostModel }
+
+// main export
+export default PostModel;
