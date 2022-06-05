@@ -18,6 +18,10 @@ function DeletePost(req: Request, res: Response) {}
 function GetSinglePost(req: Request, res: Response) {}
 
 
+// get a all post
+function GetAllPosts(req: Request, res: Response) {}
+
+
 // get all the post for a user
 function GetUserPosts(req: Request, res: Response) {}
 
@@ -47,5 +51,6 @@ export {
      LikePost,
      UnlikePost,
      RepostPost,
-     UnRepostPost
+     UnRepostPost,
+     GetAllPosts
 }

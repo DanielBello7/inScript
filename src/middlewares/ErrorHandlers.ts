@@ -3,7 +3,7 @@
 
 //imports
 import { Response, Request, NextFunction } from "express";
-
+import { validationResult } from 'express-validator';
 
 // main function to catch icon error
 function HandleIconError(req: Request, res: Response, next: NextFunction) {
@@ -25,10 +25,18 @@ function HandleGeneralError(req: Request, res: Response) {
 }
 
 
+// function that checks for the completion of the validation result
+function ValidateRequest(req: Request, res: Response, next: NextFunction) {
+     const errors = validationResult(req);
+     if (!errors.isEmpty()) return res.status(400).json({msg: errors.array()});
+     return next();
+}
+
 
 // main exports
 export { 
      HandleIconError,
      HandlePageNotFound,
-     HandleGeneralError
+     HandleGeneralError,
+     ValidateRequest
 }

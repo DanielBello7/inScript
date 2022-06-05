@@ -1,6 +1,9 @@
 
 
 
+// imports
+import { Request } from 'express';
+
 // user type
 export type UserType = {
      _id: string,
@@ -16,4 +19,10 @@ export type UserType = {
      comments: string[],
      connections: string[],
      uploads: string[]
+}
+
+
+// extended request interface
+export interface RequestInterface extends Request {
+     user?: any
 }

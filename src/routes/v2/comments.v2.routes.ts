@@ -1,58 +1,64 @@
 
 
 
+// imports
 import { 
-     DeleteComment, 
-     GetAllComments, 
-     GetUserComments, 
-     PostComment 
+     GetComment,
+     DeleteComment,
+     GetPostComments,
+     GetUserComments,
+     LikeComment,
+     PostComment,
+     RepostComment,
+     UnRepostComment,
+     UnlikeComment
 } from '../../controllers/comment.controller';
-import { authenticateToken } from '../../middlewares/authenticate';
-import express from 'express';
+import { __verifyUser } from '../../middlewares/authenticate';
+import { ValidateRequest } from '../../middlewares/ErrorHandlers';
 import { check } from 'express-validator';
+import express from 'express';
 
-
+// create router
 const router = express.Router();
 
 
+// main export
 export default () => {
 
-
-
-     // this route gives all the comments associated with a particular post
-     // ---[GET]
-     router.get('/all-comments/:postID', authenticateToken, GetAllComments);
-
-
-
-
-     // this route gives all the comments a user has made ---[GET]
-     router.get('/user-comments/:userID', authenticateToken, GetUserComments);
-
-
-
-
-
-     // this route posts a comment ---[POST]
-     router.post('/new-comment', 
+     // route posts a comment ---[POST]
+     router.post('/', 
      [
           check('postID').trim().isString().escape().withMessage('post id required'),
           check('message').trim().isString().escape().withMessage('comment required')
      ], 
-     authenticateToken, 
+     ValidateRequest,
+     __verifyUser, 
      PostComment);
 
+     // route to get a particular comment
+     router.get('/:commentID', __verifyUser, GetComment);
 
+     // route for all comments of a particular post ---[GET]
+     router.get('/post/:postID', __verifyUser, GetPostComments);
 
+     // route for all single user comments ---[GET]
+     router.get('/user/:userID', __verifyUser, GetUserComments);
 
+     // route to like a comment --[PUT]
+     router.put('/like/:commentID', __verifyUser, LikeComment);
 
-     // this route handles deleting a comment ---[DELETE]
-     // i dont think this route should even exist
-     // router.delete('/delete-comment/:commentID', authenticateToken, DeleteComment);
+     // route to repost a comment --[PUT]
+     router.put('/repost/:commentID', __verifyUser, RepostComment);
 
+     // route to unlike a comment --[PATCH]
+     router.patch('/unlike/:commentID', __verifyUser, UnlikeComment);
 
+     // route to un repost a comment --[PATCH]
+     router.patch('/unrepost/:commentID', __verifyUser, UnRepostComment);
 
+     // route to delete a comment --[DELETE]
+     router.delete('/:commentID', __verifyUser, DeleteComment);
 
-
+     // default return
      return router;
 }

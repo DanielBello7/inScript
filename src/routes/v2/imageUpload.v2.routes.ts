@@ -2,34 +2,26 @@
 
 
 // imports
-import { GetImage, UploadImage} from '../../controllers/upload.controller';
-import { authenticateToken } from '../../middlewares/authenticate';
+import { 
+     GetImage, 
+     PostImage
+} from '../../controllers/image.controller';
+import { __verifyUser } from '../../middlewares/authenticate';
 import express from 'express';
 
+
+// create router
 const router = express.Router();
 
-
-
+// main export
 export default () => {
-  
+    
+     // route for uploading images ---[POST]
+     router.post('/', __verifyUser, PostImage);
 
+     // route for sending image ---[GET]
+     router.get('/:img', __verifyUser, GetImage);
 
-  
-  
-  // handles sending of image files from the server ---- [GET]
-  router.get('/:img', authenticateToken, GetImage);
-
-  
-  
-  
-  
-  // handles uploading of only images to the server ---- [POST]
-  router.post('/upload', authenticateToken, UploadImage);
-
-  
-  
-  
-  
-  
-  return router;
+     // default return 
+     return router;
 }

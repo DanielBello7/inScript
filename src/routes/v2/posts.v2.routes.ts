@@ -3,81 +3,62 @@
 
 // imports
 import { 
-     CreatePost, 
-     GetAllUserPosts, 
-     GetSinglePost, 
+     DeletePost,
+     GetSinglePost,
+     GetUserPosts,
      LikePost,
-     Repost,
-     UnLikePost,
-     UnRepost,
-     GetAllPosts
-} from '../../controllers/posts.controller';
-import { authenticateToken } from '../../middlewares/authenticate';
+     NewPost,
+     GetAllPosts,
+     RepostPost,
+     UnRepostPost,
+     UnlikePost
+} from '../../controllers/post.controller';
+import { __verifyUser } from '../../middlewares/authenticate';
+import { ValidateRequest } from '../../middlewares/ErrorHandlers';
 import { check } from 'express-validator';
 import express from 'express';
-
 
 
 // create a router
 const router = express.Router();
 
 
-
-
+// default return
 export default () => {
 
+     // this creats a new post ---[POST]
+     router.post('/', 
+     [ 
+          check('message').trim().escape() 
+     ], 
+     ValidateRequest,
+     __verifyUser,
+     NewPost);
 
+     // route for all posts ---[GET]
+     router.get('/', __verifyUser, GetAllPosts);
 
-     // this gets a single post of any user from the id --- [GET]
-     router.get('/get-post/:id', authenticateToken, GetSinglePost);
+     // route for getting single post ---[GET]
+     router.get('/:id', __verifyUser, GetSinglePost);
 
+     // route for all posts of a user ---[GET]
+     router.get('/users/:id', __verifyUser, GetUserPosts);
 
+     // route for liking posts --[PUT]
+     router.put('/like/:postID', __verifyUser, LikePost);
 
+     // route for unliking a post --[PUT]
+     router.put('/unlike/:postID', __verifyUser, UnlikePost);
 
-     // this gets all the posts of a user and returns --- [GET]
-     router.get('/user-posts/:id', authenticateToken, GetAllUserPosts);
-
-
-
+     // route for reposting --[PUT]
+     router.put('/repost/:postID', __verifyUser, RepostPost);
      
-     // this creats a new post --- [POST]
-     router.post('/create-text-post', 
-     [ check('message').trim().escape() ], 
-     authenticateToken,
-     CreatePost);
+     // route for un-reposting --[PUT]
+     router.put('/unrepost/:postID', __verifyUser, UnRepostPost);
 
+     // route for deleting post
+     router.delete('/:postID', __verifyUser, DeletePost);
 
-
-     
-     // this handles liking posts
-     router.get('/like/post/:postID', authenticateToken, LikePost);
-
-
-
-
-     // this handles unlikeing a post
-     router.get('/unlike/post/:postID', authenticateToken, UnLikePost);
-
-
-
-
-     // this handles reposting
-     router.get('/repost/:postID', authenticateToken, Repost);
-
-
-
-     
-     // this handles un reposting
-     router.get('/un-repost/:postID', authenticateToken, UnRepost);
-
-
-
-     
-     // this handles getting all the posts from all users
-     router.get('/all/posts', authenticateToken, GetAllPosts);
-
-
-
-
+     // default return
      return router;
 }

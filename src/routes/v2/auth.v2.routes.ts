@@ -2,76 +2,38 @@
 
 
 // imports
-import { 
-     CreateAccount, 
-     GetSingleUser, 
-     GetUsers, 
-     LogoutUser, 
-     GetCurrentUser, 
-     LoginUserV2 
+import {
+     CurrentUser, 
+     LoginUser,
+     LogoutUser
 } from '../../controllers/auth.controller';
-import { authenticateToken } from '../../middlewares/authenticate';
+import { __verifyUser } from '../../middlewares/authenticate';
 import { check } from 'express-validator';
+import { ValidateRequest } from '../../middlewares/ErrorHandlers';
 import express from 'express';
 
-
-
+// create router instance
 const router = express.Router();
 
 
-
-
+// main export
 export default () => {
-
 
      // log user in --[GET]
      router.post('/login', 
      [
           check('email').trim().isEmail().escape(),
-          check('password').trim().escape()
-     ], 
-     LoginUserV2);
-
-
-
-
-
-     // create user account --[POST]
-     router.post('/create-account', 
-     [
-     check('firstName').trim().isLength({min: 3}).toLowerCase().escape(),
-     check('lastName').trim().isLength({min: 3}).toLowerCase().escape(),
-     check('email').trim().isEmail().isLength({min: 3}).escape(),
-     check('password').trim().isLength({min: 5}).escape(),
-     ], 
-     CreateAccount);
-
-
-
+          check('password').trim().escape()   
+     ],
+     ValidateRequest, 
+     LoginUser);
 
      // log user out -- [GET]
-     router.get('/logout', authenticateToken, LogoutUser);
-
-
-
-
-     // returns a list of all the users within the system --- [GET]
-     router.get('/users', authenticateToken, GetUsers);  
-
-
-
-
-     // returns a particular user gotten from req params not query  --- [GET]
-     router.get('/user/:email', authenticateToken, GetSingleUser);
-
-
-
+     router.get('/logout', __verifyUser, LogoutUser);
 
      // get current user --- [GET]
-     router.get('/current-user', authenticateToken, GetCurrentUser);
+     router.get('/current-user', __verifyUser, CurrentUser);
 
-
-
-
+     // default return
      return router;
 }
