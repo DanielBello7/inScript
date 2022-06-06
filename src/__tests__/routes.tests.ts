@@ -20,14 +20,6 @@ describe('General error routes', () => {
           expect(response.body.msg).to.exist;
      });
 
-     it('should have a handler for error pages', async () => {
-          const testCases = ['/test', '/api/test', '/api/v2/test'];
-
-          const response = await request(app).get(testCases[0]);
-          expect(response.statusCode).to.be.equal(404);
-          expect(response.body.msg).to.exist;
-     });
-
      it('should return error messages', async () => {
           const response = await request(app).get('/api/error/test-case');
           expect(response.statusCode).to.be.equal(400);
@@ -35,6 +27,25 @@ describe('General error routes', () => {
      });
 });
 
+
+describe('running error pages test', () => {
+     const conn = new MongoConnection();
+     const app = ServerApp(conn);
+
+     const testCases = ['/test', '/api/test', '/api/v2/test'];
+
+     testCases.forEach((test) => {
+          it('should return true', async () => {
+               const response = await request(app).get(test);
+               expect(response.statusCode).to.be.equal(404);
+          });
+
+          it('should return exists', async () => {
+               const response = await request(app).get(test);
+               expect(response.body.msg).to.not.be.undefined;
+          });
+     });
+});
 
 
 // test for authentication routes
