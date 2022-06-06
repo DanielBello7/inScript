@@ -4,9 +4,7 @@
 // imports
 import express from "express";
 import v2 from './v2/index.v2.routes';
-import { 
-     HandleGeneralError
-} from '../middlewares/ErrorHandlers'
+import { HandleGeneralError } from '../middlewares/ErrorHandlers'
 import { DatabaseType } from "../types/Database.type";
 
 // create router

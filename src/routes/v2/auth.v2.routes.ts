@@ -2,11 +2,7 @@
 
 
 // imports
-import {
-     CurrentUser, 
-     LoginUser,
-     LogoutUser
-} from '../../controllers/auth.controller';
+import AuthController from '../../controllers/auth.controller';
 import { __verifyUser } from '../../middlewares/authenticate';
 import { check } from 'express-validator';
 import { ValidateRequest } from '../../middlewares/ErrorHandlers';
@@ -20,6 +16,9 @@ const router = express.Router();
 // main export
 export default (conn: DatabaseType) => {
 
+     // create database connection
+     const auth = new AuthController(conn);
+
      // log user in --[GET]
      router.post('/login', 
      [
@@ -27,13 +26,13 @@ export default (conn: DatabaseType) => {
           check('password').trim().escape()   
      ],
      ValidateRequest, 
-     LoginUser);
+     auth.LoginUser);
 
      // log user out --[GET]
-     router.get('/logout', __verifyUser, LogoutUser);
+     router.get('/logout', __verifyUser, auth.LogoutUser);
 
      // get current user --[GET]
-     router.get('/current-user', __verifyUser, CurrentUser);
+     router.get('/current-user', __verifyUser, auth.CurrentUser);
 
      // default return
      return router;

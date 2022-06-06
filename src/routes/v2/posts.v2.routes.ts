@@ -2,22 +2,12 @@
 
 
 // imports
-import { 
-     DeletePost,
-     GetSinglePost,
-     GetUserPosts,
-     LikePost,
-     NewPost,
-     GetAllPosts,
-     RepostPost,
-     UnRepostPost,
-     UnlikePost
-} from '../../controllers/post.controller';
-import { __verifyUser } from '../../middlewares/authenticate';
 import { ValidateRequest } from '../../middlewares/ErrorHandlers';
+import PostController from '../../controllers/post.controller';
+import { __verifyUser } from '../../middlewares/authenticate';
+import { DatabaseType } from '../../types/Database.type';
 import { check } from 'express-validator';
 import express from 'express';
-import { DatabaseType } from '../../types/Database.type';
 
 
 // create a router
@@ -27,6 +17,8 @@ const router = express.Router();
 // default return
 export default (conn: DatabaseType) => {
 
+     const post = new PostController(conn);
+
      // this creats a new post ---[POST]
      router.post('/', 
      [ 
@@ -34,31 +26,31 @@ export default (conn: DatabaseType) => {
      ], 
      ValidateRequest,
      __verifyUser,
-     NewPost);
+     post.NewPost);
 
      // route for all posts --[GET]
-     router.get('/', __verifyUser, GetAllPosts);
+     router.get('/', __verifyUser, post.GetAllPosts);
 
      // route for getting single post --[GET]
-     router.get('/:id', __verifyUser, GetSinglePost);
+     router.get('/:id', __verifyUser, post.GetSinglePost);
 
      // route for all posts of a user --[GET]
-     router.get('/users/:id', __verifyUser, GetUserPosts);
+     router.get('/users/:id', __verifyUser, post.GetUserPosts);
 
      // route for liking posts --[PUT]
-     router.put('/like/:postID', __verifyUser, LikePost);
+     router.put('/like/:postID', __verifyUser, post.LikePost);
 
      // route for unliking a post --[PUT]
-     router.put('/unlike/:postID', __verifyUser, UnlikePost);
+     router.put('/unlike/:postID', __verifyUser, post.UnlikePost);
 
      // route for reposting --[PUT]
-     router.put('/repost/:postID', __verifyUser, RepostPost);
+     router.put('/repost/:postID', __verifyUser, post.RepostPost);
      
      // route for un-reposting --[PUT]
-     router.put('/unrepost/:postID', __verifyUser, UnRepostPost);
+     router.put('/unrepost/:postID', __verifyUser, post.UnRepostPost);
 
      // route for deleting post
-     router.delete('/:postID', __verifyUser, DeletePost);
+     router.delete('/:postID', __verifyUser, post.DeletePost);
 
      // default return
      return router;

@@ -2,25 +2,32 @@
 
 
 // imports
+import { DatabaseType } from '../types/Database.type';
 import { Response, Request } from 'express';
 import Log from "../config/bunyan.config";
 
 
-// login controller
-function LoginUser(req: Request, res: Response) {}
+
+// create the authentication controller
+class AuthController {
+     public conn;
+
+     constructor(connection: DatabaseType) {
+          this.conn = connection;
+     }
 
 
-// logout controller
-function LogoutUser(req: Request, res: Response) {}
+     // login controller
+     LoginUser(req: Request, res: Response) {}
 
+     // logout controller
+     LogoutUser(req: Request, res: Response) {}
 
-// current user controller
-function CurrentUser(req: Request, res: Response) {}
-
-
-// exports
-export {
-     LoginUser, 
-     LogoutUser,
-     CurrentUser
+     // current user controller
+     CurrentUser(req: Request, res: Response) {}
 }
+
+
+
+// export
+export default AuthController

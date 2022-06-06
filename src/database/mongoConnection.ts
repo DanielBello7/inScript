@@ -30,7 +30,7 @@ class MongoConnection implements DatabaseType {
           return a
      }
 
-     async GetUsers(): Promise<PaginatedResponse[]> {
+     async GetUsers(): Promise<PaginatedResponse> {
 
           const payload: PaginatedResponse = {
                currentPage: 1,
@@ -39,7 +39,7 @@ class MongoConnection implements DatabaseType {
                results: [],
                totalFound: 1
           }
-          return [payload]
+          return payload
      }
 
      async CreateUser(user: UserType) {}

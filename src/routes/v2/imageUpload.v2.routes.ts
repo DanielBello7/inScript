@@ -2,10 +2,7 @@
 
 
 // imports
-import { 
-     GetImage, 
-     PostImage
-} from '../../controllers/image.controller';
+import ImageController from '../../controllers/image.controller';
 import { __verifyUser } from '../../middlewares/authenticate';
 import express from 'express';
 import { DatabaseType } from '../../types/Database.type';
@@ -16,12 +13,14 @@ const router = express.Router();
 
 // main export
 export default (conn: DatabaseType) => {
+
+     const image = new ImageController(conn);
     
      // route for uploading images --[POST]
-     router.post('/', __verifyUser, PostImage);
+     router.post('/', __verifyUser, image.PostImage);
 
      // route for sending image --[GET]
-     router.get('/:img', __verifyUser, GetImage);
+     router.get('/:img', __verifyUser, image.GetImage);
 
      // default return 
      return router;
