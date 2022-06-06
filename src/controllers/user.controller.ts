@@ -17,28 +17,28 @@ class UserController {
      }
 
      // new user controller
-     CreateUser(req: Request, res: Response) {}    
+     CreateUser = (req: Request, res: Response) => {} 
 
      // delete user controller
-     DeleteUser(req: Request, res: Response) {}
+     DeleteUser = (req: Request, res: Response) => {}
 
      // get single user controller
-     GetUser(req: Request, res: Response) {}
+     GetUser = (req: Request, res: Response) => {}
 
      // get all users controller
-     GetUsers(req: Request, res: Response) {}
+     GetUsers = (req: Request, res: Response) => {}
 
      // modify user controller
-     ModifyUser(req: Request, res: Response) {}
+     ModifyUser = (req: Request, res: Response) => {}
 
      // get all user connections
-     GetUserConnections(req: Request, res: Response) {}
+     GetUserConnections = (req: Request, res: Response) => {}
 
      // add a new connection
-     AddConnection(req: Request, res: Response) {}
+     AddConnection = (req: Request, res: Response) => {}
 
      // removes a connection
-     RemoveConnection(req: Request, res: Response) {}
+     RemoveConnection = (req: Request, res: Response) => {}
 
 }
 

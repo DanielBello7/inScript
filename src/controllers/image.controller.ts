@@ -15,15 +15,15 @@ class ImageController {
      }
 
      // return image
-     GetImage(req: Request, res: Response) {}
+     GetImage = (req: Request, res: Response) => {}
 
 
      // post an image
-     PostImage(req: Request, res: Response) {}
+     PostImage = (req: Request, res: Response) => {}
 
 
      // send an image
-     SendImage(req: Request, res: Response) {}
+     SendImage = (req: Request, res: Response) => {}
 }
 
 

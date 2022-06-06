@@ -18,15 +18,13 @@ class AuthController {
 
 
      // login controller
-     LoginUser(req: Request, res: Response) {}
+     LoginUser = (req: Request, res: Response) => {}
 
      // logout controller
-     LogoutUser(req: Request, res: Response) {
-          console.log(this.conn.GetUsers())
-     }
+     LogoutUser = (req: Request, res: Response) => {}
 
      // current user controller
-     CurrentUser(req: Request, res: Response) {}
+     CurrentUser = (req: Request, res: Response) => {}
 }
 
 

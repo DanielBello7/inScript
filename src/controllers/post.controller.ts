@@ -14,39 +14,39 @@ class PostController {
      }
 
      // create post
-     NewPost(req: Request, res: Response) {}
+     NewPost = (req: Request, res: Response) => {}
 
 
      // delete post
-     DeletePost(req: Request, res: Response) {}
+     DeletePost = (req: Request, res: Response) => {}
 
 
      // get a single post
-     GetSinglePost(req: Request, res: Response) {}
+     GetSinglePost = (req: Request, res: Response) => {}
 
 
      // get a all post
-     GetAllPosts(req: Request, res: Response) {}
+     GetAllPosts = (req: Request, res: Response) => {}
 
 
      // get all the post for a user
-     GetUserPosts(req: Request, res: Response) {}
+     GetUserPosts = (req: Request, res: Response) => {}
 
 
      // like a post
-     LikePost(req: Request, res: Response) {}
+     LikePost = (req: Request, res: Response) => {}
 
 
      // unlike a post
-     UnlikePost(req: Request, res: Response) {}
+     UnlikePost = (req: Request, res: Response) => {}
 
 
      // repost a post
-     RepostPost(req: Request, res: Response) {}
+     RepostPost = (req: Request, res: Response) => {}
 
 
      // un-repost a post
-     UnRepostPost(req: Request, res: Response) {}
+     UnRepostPost = (req: Request, res: Response) => {}
 
 }
 

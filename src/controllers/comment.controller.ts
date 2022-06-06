@@ -15,39 +15,39 @@ class CommentController {
      }
 
      // new comment
-     PostComment(req: Request, res: Response) {}
+     PostComment = (req: Request, res: Response) => {}
 
 
      // retrieve a particular comment
-     GetComment(req: Request, res: Response) {}
+     GetComment = (req: Request, res: Response) => {}
 
 
      // get all the comments from a user
-     GetUserComments(req: Request, res: Response) {}
+     GetUserComments = (req: Request, res: Response) => {}
 
 
      // get comments for a particuar post
-     GetPostComments(req: Request, res: Response) {}
+     GetPostComments = (req: Request, res: Response) => {}
 
 
      // delete a particular comment
-     DeleteComment(req: Request, res: Response) {}
+     DeleteComment = (req: Request, res: Response) => {}
 
 
      // like a comment
-     LikeComment(req: Request, res: Response) {}
+     LikeComment = (req: Request, res: Response) => {}
 
 
      // unlike a comment
-     UnlikeComment(req: Request, res: Response) {}
+     UnlikeComment = (req: Request, res: Response) => {}
 
 
      // repost a comment
-     RepostComment(req: Request, res: Response) {}
+     RepostComment = (req: Request, res: Response) => {}
 
 
      // un-repost a comment
-     UnRepostComment(req: Request, res: Response) {}
+     UnRepostComment = (req: Request, res: Response) => {}
 
 
 }
