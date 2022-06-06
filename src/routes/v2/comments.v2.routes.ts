@@ -17,13 +17,14 @@ import { __verifyUser } from '../../middlewares/authenticate';
 import { ValidateRequest } from '../../middlewares/ErrorHandlers';
 import { check } from 'express-validator';
 import express from 'express';
+import { DatabaseType } from '../../types/Database.type';
 
 // create router
 const router = express.Router();
 
 
 // main export
-export default () => {
+export default (conn: DatabaseType) => {
 
      // route posts a comment ---[POST]
      router.post('/', 
@@ -35,10 +36,10 @@ export default () => {
      __verifyUser, 
      PostComment);
 
-     // route to get a particular comment
+     // route to get a particular comment --[GET]
      router.get('/:commentID', __verifyUser, GetComment);
 
-     // route for all comments of a particular post ---[GET]
+     // route for all comments of a particular post --[GET]
      router.get('/post/:postID', __verifyUser, GetPostComments);
 
      // route for all single user comments ---[GET]

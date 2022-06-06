@@ -16,13 +16,14 @@ import {
      RemoveConnection
 } from '../../controllers/user.controller';
 import { __verifyUser } from '../../middlewares/authenticate';
+import { DatabaseType } from '../../types/Database.type';
 
 // create the router
 const router = express.Router();
 
 
 // main export
-export default () => {
+export default (conn: DatabaseType) => {
 
      // route for creating new user --[POST]
      router.post('/', 

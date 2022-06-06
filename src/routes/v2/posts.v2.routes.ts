@@ -17,6 +17,7 @@ import { __verifyUser } from '../../middlewares/authenticate';
 import { ValidateRequest } from '../../middlewares/ErrorHandlers';
 import { check } from 'express-validator';
 import express from 'express';
+import { DatabaseType } from '../../types/Database.type';
 
 
 // create a router
@@ -24,7 +25,7 @@ const router = express.Router();
 
 
 // default return
-export default () => {
+export default (conn: DatabaseType) => {
 
      // this creats a new post ---[POST]
      router.post('/', 
@@ -35,13 +36,13 @@ export default () => {
      __verifyUser,
      NewPost);
 
-     // route for all posts ---[GET]
+     // route for all posts --[GET]
      router.get('/', __verifyUser, GetAllPosts);
 
-     // route for getting single post ---[GET]
+     // route for getting single post --[GET]
      router.get('/:id', __verifyUser, GetSinglePost);
 
-     // route for all posts of a user ---[GET]
+     // route for all posts of a user --[GET]
      router.get('/users/:id', __verifyUser, GetUserPosts);
 
      // route for liking posts --[PUT]

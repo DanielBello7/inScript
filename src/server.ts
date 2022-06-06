@@ -13,10 +13,11 @@ import {
      HandleIconError, 
      HandlePageNotFound 
 } from './middlewares/ErrorHandlers';
+import { DatabaseType } from './types/Database.type';
 
 
 // main server application
-function ServerApp() {
+function ServerApp(conn: DatabaseType) {
 
      // create express app
      const app: Application = express();
@@ -37,10 +38,10 @@ function ServerApp() {
      app.use(ExpressSecret);
 
      app.use(HandleIconError);
-     app.use('/api', api());
+     app.use('/api', api(conn));
 
-     app.use(HandlePageNotFound);
-
+     // app.use(HandlePageNotFound);
+     
 
      // return the app
      return app;

@@ -15,6 +15,7 @@ import ServerApp from '../server';
 import http from 'http';
 import path from 'path';
 import dotenv from 'dotenv';
+import MongoConnection from '../database/mongoConnection';
 
 
 // setting the environment variables
@@ -23,8 +24,12 @@ dotenv.config({path: path.join(__dirname, `../env/${envPath}`)});
 
 
 
+// create instance of the database connection
+const conn = new MongoConnection();
+
+
 // get app from server app function
-const serverApp = ServerApp();
+const serverApp = ServerApp(conn);
 const server = http.createServer(serverApp);
 
 const port = process.env.PORT || 2022;
@@ -36,7 +41,6 @@ function onListening() {
 }
 
 function onError(error: ErrorHandler){
-  
      switch (error.code) {
           case 'EACCES':
                Log.error(error.message);

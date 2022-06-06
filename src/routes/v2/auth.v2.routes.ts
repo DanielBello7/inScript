@@ -11,13 +11,14 @@ import { __verifyUser } from '../../middlewares/authenticate';
 import { check } from 'express-validator';
 import { ValidateRequest } from '../../middlewares/ErrorHandlers';
 import express from 'express';
+import { DatabaseType } from '../../types/Database.type';
 
 // create router instance
 const router = express.Router();
 
 
 // main export
-export default () => {
+export default (conn: DatabaseType) => {
 
      // log user in --[GET]
      router.post('/login', 
@@ -28,10 +29,10 @@ export default () => {
      ValidateRequest, 
      LoginUser);
 
-     // log user out -- [GET]
+     // log user out --[GET]
      router.get('/logout', __verifyUser, LogoutUser);
 
-     // get current user --- [GET]
+     // get current user --[GET]
      router.get('/current-user', __verifyUser, CurrentUser);
 
      // default return
