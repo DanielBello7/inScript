@@ -20,14 +20,12 @@ describe('General error routes', () => {
           expect(response.body.msg).to.exist;
      });
 
-     it.only('should have a handler for error pages', () => {
+     it('should have a handler for error pages', async () => {
           const testCases = ['/test', '/api/test', '/api/v2/test'];
 
-          testCases.forEach(async (testCase: string) => {
-               const response = await request(app).get(testCase);
-               expect(response.statusCode).to.be.equal(404);
-               expect(response.body.msg).to.exist
-          });
+          const response = await request(app).get(testCases[0]);
+          expect(response.statusCode).to.be.equal(404);
+          expect(response.body.msg).to.exist;
      });
 
      it('should return error messages', async () => {

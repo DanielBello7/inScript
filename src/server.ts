@@ -40,7 +40,7 @@ function ServerApp(conn: DatabaseType) {
      app.use(HandleIconError);
      app.use('/api', api(conn));
 
-     // app.use(HandlePageNotFound);
+     app.use(HandlePageNotFound);
      
 
      // return the app
