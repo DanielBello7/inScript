@@ -14,8 +14,6 @@ class UserController {
 
      constructor(connection: DatabaseType) {
           this.conn = connection;
-
-          console.log(this.conn.GetUsers())
      }
 
      // new user controller
@@ -28,9 +26,7 @@ class UserController {
      GetUser(req: Request, res: Response) {}
 
      // get all users controller
-     async GetUsers(req: Request, res: Response) {
-          console.log(this.conn);
-     }
+     GetUsers(req: Request, res: Response) {}
 
      // modify user controller
      ModifyUser(req: Request, res: Response) {}

@@ -26,8 +26,7 @@ export default (conn: DatabaseType) => {
      ValidateRequest, user.CreateUser);
 
      // route to get all users --[GET]
-     // router.get('/', __verifyUser, user.GetUsers);
-     router.get('/', user.GetUsers);
+     router.get('/', __verifyUser, user.GetUsers);
 
      // route to get a singleUser --[GET]
      router.get('/:userID', __verifyUser, user.GetUser);
