@@ -5,17 +5,15 @@
 import mongoose from 'mongoose';
 import { DatabaseType, PaginatedResponse } from '../types/Database.type';
 import { UserType } from '../types/UserType.type';
+import Log from '../config/bunyan.config';
 
 
 class MongoConnection implements DatabaseType {
-     constructor() {
-
-          // // connect function
-          // async function connect(databaseURL: string, callback?: Function) {
-          //      const databaseOptions: mongoose.ConnectOptions = {}
-          //      return await mongoose.connect(databaseURL, databaseOptions, () => callback && callback());
-          // }
-
+     constructor(url: string) {
+          // connect function
+          mongoose.connect(url, {}, () => {
+               Log.info('connected to database');
+          });
      }
 
 

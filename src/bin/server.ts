@@ -25,7 +25,7 @@ dotenv.config({path: path.join(__dirname, `../env/${envPath}`)});
 
 
 // create instance of the database connection
-const conn = new MongoConnection();
+const conn = new MongoConnection(process.env.URL as string);
 
 
 // get app from server app function
