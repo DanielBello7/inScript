@@ -24,5 +24,6 @@ export type UserType = {
 
 // extended request interface
 export interface RequestInterface extends Request {
-     user?: any
+     user?: any,
+     secret?: any
 }

@@ -3,11 +3,9 @@
 
 // imports
 import express from "express";
-import v1 from './v1/index.v1.routes';
 import v2 from './v2/index.v2.routes';
 import { 
-     HandleGeneralError, 
-     HandlePageNotFound 
+     HandleGeneralError
 } from '../middlewares/ErrorHandlers'
 
 // create router
@@ -18,9 +16,6 @@ const router = express.Router();
 // routes handles
 export default () => {
 
-     // this makes use of the regular paspport login system with express
-     router.use('/v1', v1());
-
      // this makes use of the jswt version of authentication
      router.use('/v2', v2());
 
@@ -29,9 +24,6 @@ export default () => {
 
      // route for catching errors with a message
      router.get('/error/:errorMsg', HandleGeneralError);
-     
-     // catching page not found
-     router.use(HandlePageNotFound);
 
      // main return
      return router;
