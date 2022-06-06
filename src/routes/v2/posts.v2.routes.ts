@@ -32,10 +32,10 @@ export default (conn: DatabaseType) => {
      router.get('/', __verifyUser, post.GetAllPosts);
 
      // route for getting single post --[GET]
-     router.get('/:id', __verifyUser, post.GetSinglePost);
+     router.get('/:postID', __verifyUser, post.GetSinglePost);
 
      // route for all posts of a user --[GET]
-     router.get('/users/:id', __verifyUser, post.GetUserPosts);
+     router.get('/users/:userID', __verifyUser, post.GetUserPosts);
 
      // route for liking posts --[PUT]
      router.put('/like/:postID', __verifyUser, post.LikePost);

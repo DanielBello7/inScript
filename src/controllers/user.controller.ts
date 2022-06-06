@@ -3,7 +3,8 @@
 
 // imports
 import { DatabaseType } from '../types/Database.type';
-import { Response, Request } from 'express';
+import { RequestInterface } from '../types/UserType.type';
+import { Response } from 'express';
 import Log from "../config/bunyan.config";
 
 
@@ -17,28 +18,48 @@ class UserController {
      }
 
      // new user controller
-     CreateUser = (req: Request, res: Response) => {} 
+     // expects UserType data
+     CreateUser = (req: RequestInterface, res: Response) => {} 
 
      // delete user controller
-     DeleteUser = (req: Request, res: Response) => {}
+     // gets id from req.user
+     DeleteUser = (req: RequestInterface, res: Response) => {}
 
      // get single user controller
-     GetUser = (req: Request, res: Response) => {}
+     // uses :userID
+     GetUser = (req: RequestInterface, res: Response) => {}
 
      // get all users controller
-     GetUsers = (req: Request, res: Response) => {}
+     GetUsers = async (req: RequestInterface, res: Response) => {
+          try {
+
+               const response = await this.conn.GetUsers();
+               return res.json({payload: response});
+
+          } catch (error: any) {
+               Log.info(error);
+               return res.status(500).json({msg: error.message});
+          }
+     }
 
      // modify user controller
-     ModifyUser = (req: Request, res: Response) => {}
+     // gets user id from req.user
+     // gets "modifyData"
+     ModifyUser = (req: RequestInterface, res: Response) => {}
 
      // get all user connections
-     GetUserConnections = (req: Request, res: Response) => {}
+     // gets user id from req.user
+     GetUserConnections = (req: RequestInterface, res: Response) => {}
 
      // add a new connection
-     AddConnection = (req: Request, res: Response) => {}
+     // gets user id from req.user
+     // uses :ID
+     AddConnection = (req: RequestInterface, res: Response) => {}
 
      // removes a connection
-     RemoveConnection = (req: Request, res: Response) => {}
+     // gets user id from req.user
+     // uses :ID
+     RemoveConnection = (req: RequestInterface, res: Response) => {}
 
 }
 

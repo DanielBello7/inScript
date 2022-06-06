@@ -3,7 +3,8 @@
 
 // imports
 import { DatabaseType } from '../types/Database.type';
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { RequestInterface } from '../types/UserType.type';
 import Log from "../config/bunyan.config";
 
 
@@ -15,15 +16,14 @@ class ImageController {
      }
 
      // return image
-     GetImage = (req: Request, res: Response) => {}
+     // gets user from req.user
+     // uses :img
+     GetImage = (req: RequestInterface, res: Response) => {}
 
 
      // post an image
-     PostImage = (req: Request, res: Response) => {}
-
-
-     // send an image
-     SendImage = (req: Request, res: Response) => {}
+     // gets user from req.user
+     PostImage = (req: RequestInterface, res: Response) => {}
 }
 
 

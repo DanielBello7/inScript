@@ -3,7 +3,8 @@
 
 // imports
 import { DatabaseType } from '../types/Database.type';
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { RequestInterface } from '../types/UserType.type';
 import Log from "../config/bunyan.config";
 
 
@@ -15,39 +16,53 @@ class CommentController {
      }
 
      // new comment
-     PostComment = (req: Request, res: Response) => {}
+     // gets postID and message from body
+     // gets user from req.user
+     PostComment = (req: RequestInterface, res: Response) => {}
 
 
      // retrieve a particular comment
-     GetComment = (req: Request, res: Response) => {}
+     // uses :commentID
+     GetComment = (req: RequestInterface, res: Response) => {}
 
 
      // get all the comments from a user
-     GetUserComments = (req: Request, res: Response) => {}
+     // uses :userID
+     GetUserComments = (req: RequestInterface, res: Response) => {}
 
 
      // get comments for a particuar post
-     GetPostComments = (req: Request, res: Response) => {}
+     // uses :postID
+     GetPostComments = (req: RequestInterface, res: Response) => {}
 
 
      // delete a particular comment
-     DeleteComment = (req: Request, res: Response) => {}
+     // uses :commentID
+     DeleteComment = (req: RequestInterface, res: Response) => {}
 
 
      // like a comment
-     LikeComment = (req: Request, res: Response) => {}
+     // gets user from req.user
+     // uses :commentID
+     LikeComment = (req: RequestInterface, res: Response) => {}
 
 
      // unlike a comment
-     UnlikeComment = (req: Request, res: Response) => {}
+     // gets user from req.user
+     // uses :commentID
+     UnlikeComment = (req: RequestInterface, res: Response) => {}
 
 
      // repost a comment
-     RepostComment = (req: Request, res: Response) => {}
+     // gets user from req.user
+     // uses :commentID
+     RepostComment = (req: RequestInterface, res: Response) => {}
 
 
      // un-repost a comment
-     UnRepostComment = (req: Request, res: Response) => {}
+     // gets user from req.user
+     // uses :commentID
+     UnRepostComment = (req: RequestInterface, res: Response) => {}
 
 
 }

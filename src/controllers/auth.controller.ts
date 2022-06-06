@@ -3,7 +3,8 @@
 
 // imports
 import { DatabaseType } from '../types/Database.type';
-import { Response, Request } from 'express';
+import { RequestInterface } from '../types/UserType.type'; 
+import { Response } from 'express';
 import Log from "../config/bunyan.config";
 
 
@@ -18,13 +19,17 @@ class AuthController {
 
 
      // login controller
-     LoginUser = (req: Request, res: Response) => {}
+     // gets email and password from body
+     LoginUser = (req: RequestInterface, res: Response) => {}
 
      // logout controller
-     LogoutUser = (req: Request, res: Response) => {}
+     // gets user id from req.user
+     LogoutUser = (req: RequestInterface, res: Response) => {}
 
      // current user controller
-     CurrentUser = (req: Request, res: Response) => {}
+     // sends the current user
+     // gets user from req.user
+     CurrentUser = (req: RequestInterface, res: Response) => {}
 }
 
 

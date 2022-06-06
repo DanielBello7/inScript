@@ -26,7 +26,8 @@ export default (conn: DatabaseType) => {
      ValidateRequest, user.CreateUser);
 
      // route to get all users --[GET]
-     router.get('/', __verifyUser, user.GetUsers);
+     // router.get('/', __verifyUser, user.GetUsers);
+     router.get('/', user.GetUsers);
 
      // route to get a singleUser --[GET]
      router.get('/:userID', __verifyUser, user.GetUser);
@@ -40,11 +41,17 @@ export default (conn: DatabaseType) => {
      // route remove connections --[PATCH]
      router.patch('/connections/remove/:ID', __verifyUser, user.RemoveConnection);
 
-     // route to modify user
-     router.put('/modify', __verifyUser, user.ModifyUser);
+     // route to modify user --[PATCH]
+     router.patch('/modify', 
+     [
+          check('modifyData').isObject().escape().withMessage('required')
+     ], 
+     ValidateRequest, 
+     __verifyUser, 
+     user.ModifyUser);
 
-     // route to delete user
-     router.delete('/', __verifyUser, user.DeleteUser);
+     // route to delete user --[DELETE]
+     router.delete('/',__verifyUser, user.DeleteUser);
 
      // default return
      return router;
