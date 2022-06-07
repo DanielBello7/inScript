@@ -17,7 +17,7 @@ class MongoConnection implements DatabaseType {
      }
 
 
-     async GetUser(email: string): Promise<UserType> {
+     async GetUser(email: string): Promise<UserType[]> {
           let a: UserType = {
                _id: '',
                email: '',
@@ -25,7 +25,7 @@ class MongoConnection implements DatabaseType {
                lastName: '',
                password: ''
           }
-          return a
+          return [a]
      }
 
      async GetUsers(): Promise<PaginatedResponse> {

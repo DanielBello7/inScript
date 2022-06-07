@@ -17,7 +17,7 @@ export type PaginatedResponse = {
 
 // main database type
 export type DatabaseType = {
-     GetUser: (email: string) => Promise<UserType>,
+     GetUser: (email: string) => Promise<UserType[]>,
      GetUsers: () => Promise<PaginatedResponse>,
      CreateUser: (user: UserType) => Promise<any>,
      DeleteUser: (email: string) => Promise<any>,

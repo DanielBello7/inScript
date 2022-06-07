@@ -5,13 +5,13 @@
 import ServerApp from "../server";
 import request from 'supertest';
 import { expect } from "chai";
-import MongoConnection from '../database/mongoConnection';
+import DevelopmentConnection from '../database/developmentConnection';
 
 
 // tests for general error routes
 describe('General error routes', () => {
 
-     const conn = new MongoConnection();
+     const conn = new DevelopmentConnection();
      const app = ServerApp(conn);
 
      it('should have a general error route', async () => {
@@ -29,7 +29,7 @@ describe('General error routes', () => {
 
 
 describe('running error pages test', () => {
-     const conn = new MongoConnection();
+     const conn = new DevelopmentConnection();
      const app = ServerApp(conn);
 
      const testCases = ['/test', '/api/test', '/api/v2/test'];
