@@ -55,7 +55,7 @@ export default (conn: DatabaseType) => {
      user.ModifyUser);
 
      // route to delete user --[DELETE]
-     router.delete('/',__verifyUser, user.DeleteUser);
+     router.delete('/delete',__verifyUser, user.DeleteUser);
 
      // default return
      return router;

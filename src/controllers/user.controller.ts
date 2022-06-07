@@ -77,7 +77,9 @@ class UserController {
 
                if (response.length <= 0) return res.sendStatus(204);
 
-               return res.json({payload: response[0]});
+               const { password, ...responseUser } = response[0];
+
+               return res.json({payload: responseUser});
 
           } catch (error: any) {
                Log.info(error);

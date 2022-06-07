@@ -49,7 +49,7 @@ class DevelopmentAPI implements DatabaseType {
 
 
      // function to get users
-     async GetUsers(page: number = 1, limit: number = 1): Promise<any> {
+     async GetUsers(page: number = 1, limit: number = 5): Promise<any> {
           const response = await LocalPaginate(this.users, page, limit);
           return response;
      }
@@ -71,6 +71,7 @@ class DevelopmentAPI implements DatabaseType {
           return newUser;
      }
 
+     // function to modify a user
      async ModifyUser(email: string, data: ModifyDataType): Promise<boolean> {
 
           let changed = false;
@@ -98,6 +99,7 @@ class DevelopmentAPI implements DatabaseType {
           return true;
      }
 
+     // function to remove a user from the list
      async DeleteUser(email: string): Promise<boolean> {
           return true
      }
