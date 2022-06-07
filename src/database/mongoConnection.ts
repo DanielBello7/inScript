@@ -2,10 +2,14 @@
 
 
 // imports
+import Log from '../config/bunyan.config';
 import mongoose from 'mongoose';
 import { DatabaseType, PaginatedResponse } from '../types/Database.type';
-import { UserType } from '../types/UserType.type';
-import Log from '../config/bunyan.config';
+import { 
+     UserType, 
+     NewUser, 
+     ModifyDataType 
+} from '../types/UserType.type';
 
 
 class MongoConnection implements DatabaseType {
@@ -40,11 +44,17 @@ class MongoConnection implements DatabaseType {
           return payload
      }
 
-     async CreateUser(user: UserType) {}
+     async CreateUser(user: NewUser): Promise<UserType | false> {
+          return false
+     }
 
-     async ModifyUser(userData: any) {}
+     async ModifyUser(email: string, data: ModifyDataType): Promise<boolean> {
+          return false;
+     }
 
-     async DeleteUser(email: string) {}
+     async DeleteUser(email: string): Promise<boolean> {
+          return false;
+     }
 }
 
 

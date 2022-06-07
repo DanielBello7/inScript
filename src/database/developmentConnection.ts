@@ -2,9 +2,15 @@
 
 
 // imports
-import { UserType } from "../types/UserType.type";
 import { DatabaseType } from "../types/Database.type";
 import { LocalPaginate } from '../middlewares/Paginate';
+import bcrypt from 'bcrypt';
+import { 
+     UserType, 
+     NewUser, 
+     ModifyDataType 
+} from "../types/UserType.type";
+
 
 
 // create the implementation of the class
@@ -43,37 +49,58 @@ class DevelopmentAPI implements DatabaseType {
 
 
      // function to get users
-     public async GetUsers(page: number = 1, limit: number = 1): Promise<any> {
+     async GetUsers(page: number = 1, limit: number = 1): Promise<any> {
           const response = await LocalPaginate(this.users, page, limit);
           return response;
      }
 
      // function to get a particular user
-     public async GetUser(id: string): Promise<UserType[]> {
+     async GetUser(id: string): Promise<UserType[]> {
           const selectedUser = this.users.filter(user => user.email === id);
           return selectedUser;
      }
 
      // function to create a new user and add to the database
-     public async CreateUser(user: UserType): Promise<any> {
-          
-          const response = this.users.filter(doc => doc.email === user.email);
-
-          if (response.length > 0) return {msg: 'user already exists!'};
-
-          let _id;
-
-          if (!user._id) _id = Math.random().toString();
-          else _id = user._id;
+     async CreateUser(user: NewUser): Promise<UserType | false> {
+          let _id = Math.random().toString();
 
           const newUser = {...user, _id }
+
           this.users.push(newUser);
-          return newUser
+
+          return newUser;
      }
 
-     public async ModifyUser(userData: any) {}
+     async ModifyUser(email: string, data: ModifyDataType): Promise<boolean> {
 
-     public async DeleteUser(email: string) {}
+          let changed = false;
+
+          const newData = this.users.map(user => {
+               if (user.email !== email) return user
+
+               changed = true;
+
+               if (data.firstName) user.firstName = data.firstName;
+
+               if (data.lastName) user.lastName = data.lastName;
+
+               if (data.password) {
+                    user.password = bcrypt.hashSync(data.password, 10);
+               }
+
+               return user;
+          });
+
+          this.users = newData;
+
+          if (!changed) return false;
+
+          return true;
+     }
+
+     async DeleteUser(email: string): Promise<boolean> {
+          return true
+     }
 }
 
 

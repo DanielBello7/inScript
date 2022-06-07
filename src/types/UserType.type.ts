@@ -27,3 +27,19 @@ export interface RequestInterface extends Request {
      user?: any,
      secret?: any
 }
+
+// new user type
+export type NewUser = {
+     firstName: string,
+     lastName: string,
+     email: string,
+     password: string,
+}
+
+
+// modify data type
+export type ModifyDataType = {
+     firstName?: string,
+     lastName?: string,
+     password?: string
+}

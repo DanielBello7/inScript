@@ -43,13 +43,13 @@ class AuthController {
                     likedPosts, 
                     posts, 
                     repostedPosts,
-                    ...responseUser
+                    ...user
                } = response[0];
 
-               const token = generateToken(responseUser);
+               const token = generateToken(user);
 
                const payload = {
-                    responseUser,
+                    user,
                     token
                }
 
@@ -63,12 +63,17 @@ class AuthController {
 
      // logout controller
      // gets user id from req.user
-     LogoutUser = (req: RequestInterface, res: Response) => {}
+     LogoutUser = (req: RequestInterface, res: Response) => {
+          req.user = null;
+          return res.json({msg: 'logged out'});
+     }
 
      // current user controller
      // sends the current user
      // gets user from req.user
-     CurrentUser = (req: RequestInterface, res: Response) => {}
+     CurrentUser = (req: RequestInterface, res: Response) => {
+          return res.json({payload: req.user});
+     }
 }
 
 

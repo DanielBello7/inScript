@@ -16,12 +16,16 @@ const router = express.Router();
 // main export
 export default (conn: DatabaseType) => {
 
+     // create an instance of the user controller
      const user = new UserController(conn);
 
      // route for creating new user --[POST]
      router.post('/', 
      [
-          check('firstName').isString()
+          check('firstName').isString().escape(),
+          check('lastName').isString().escape(),
+          check('email').isString().escape(),
+          check('password').isString().escape()
      ], 
      ValidateRequest, user.CreateUser);
 

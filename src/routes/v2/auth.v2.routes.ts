@@ -32,7 +32,7 @@ export default (conn: DatabaseType) => {
      router.get('/logout', __verifyUser, auth.LogoutUser);
 
      // get current user --[GET]
-     router.get('/current-user', __verifyUser, auth.CurrentUser);
+     router.get('/user', __verifyUser, auth.CurrentUser);
 
      // default return
      return router;
