@@ -20,7 +20,8 @@ describe('Authentication tests', () => {
           }
           const response = await request(app).post('/api/v2/auth/login').send(data);
 
-          console.log(response.body);
           expect(response.statusCode).to.be.equal(200);
      });
+
+     
 });
