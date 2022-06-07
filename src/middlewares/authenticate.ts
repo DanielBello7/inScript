@@ -5,8 +5,11 @@
 import { Response, NextFunction } from "express";
 import { RequestInterface } from "../types/UserType.type";
 import jwt from 'jsonwebtoken';
+import envConfig from '../config/env.config';
 
 
+// using env variables
+envConfig();
 
 // authenticats a user with jswt
 function __verifyUser(req: RequestInterface, res: Response, next: NextFunction) {

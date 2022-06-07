@@ -13,16 +13,12 @@ import { ErrorHandler } from '../types/ErrorType.type';
 import Log from '../config/bunyan.config'; 
 import ServerApp from '../server';
 import http from 'http';
-import path from 'path';
-import dotenv from 'dotenv';
+import envConfig from '../config/env.config';
 import MongoConnection from '../database/mongoConnection';
 
 
-// setting the environment variables
-const envPath = process.env.NODE_ENV==='dev' ? 'dev.env' : 'prod.env';
-dotenv.config({path: path.join(__dirname, `../env/${envPath}`)});
-
-
+// use the env variables
+envConfig();
 
 // create instance of the database connection
 const conn = new MongoConnection(process.env.URL as string);

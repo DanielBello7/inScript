@@ -19,21 +19,24 @@ class DevelopmentAPI implements DatabaseType {
                     firstName: 'Daniel',
                     lastName: 'Benson',
                     email: 'daniel@gmail.com',
-                    password: 'daniel'
+                    password: '$2b$10$5EgyJZGKB3ODP//HePhLGe97p8aZvJzyG2Fw5u2H.QOW2ZcHuikPa',
+                    // password: 'daniel'
                },
                {
                     _id: '914jlaeov',
                     firstName: 'David',
                     lastName: 'Bello',
                     email: 'david@gmail.com',
-                    password: 'david'
+                    password: '$2b$10$2qTzPR0PDkL0eah4b5.4reUsp7Y0KejI7hX2IjunAksWjl5KJmLy2',
+                    // password: 'david'
                },
                {
                     _id: '0724lbae',
                     firstName: 'Joshua',
                     lastName: 'Badmius',
                     email: 'joshua@gmail.com',
-                    password: 'joshua'
+                    password: '$2b$10$Y2DpDOx6Q6UMqZxnzkrg5OS.64k.oJdJg4rvjEV05xuqd3qt1kvjq',
+                    // password: 'joshua'
                },
           ]
      }
@@ -68,10 +71,11 @@ class DevelopmentAPI implements DatabaseType {
           return newUser
      }
 
-     async ModifyUser(userData: any) {}
+     public async ModifyUser(userData: any) {}
 
-     async DeleteUser(email: string) {}
+     public async DeleteUser(email: string) {}
 }
+
 
 // export the class
 export default DevelopmentAPI;
