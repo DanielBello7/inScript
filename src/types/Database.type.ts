@@ -33,6 +33,7 @@ export type DatabaseType = {
      ModifyUser: (email: string, details: ModifyDataType) => Promise<boolean>,
 
      NewPost: (data: NewPostType) => Promise<PostType | false>,
-     GetPost: (id?: string) => Promise<PaginatedResponse>,
-     GetUserPosts: (email: string) => Promise<PaginatedResponse>
+     GetPost: (id: string) => Promise<PostType[]>,
+     GetAllPost: (page: number, limit: number) => Promise<PaginatedResponse>,
+     GetUserPosts: (email: string, page: number, limit: number) => Promise<PaginatedResponse>
 }

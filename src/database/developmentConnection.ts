@@ -1,7 +1,6 @@
 
 
 
-// imports
 import { DatabaseType, PaginatedResponse } from "../types/Database.type";
 import { LocalPaginate } from '../middlewares/Paginate';
 import bcrypt from 'bcrypt';
@@ -128,27 +127,25 @@ class DevelopmentAPI implements DatabaseType {
      }
 
      // function to get all posts or a specific user post
-     async GetPost(id?: string | undefined): Promise<PaginatedResponse> {
-          const payload: PaginatedResponse = {
-               currentPage: 1,
-               hasMore: false,
-               limit: 1,
-               results: [],
-               totalFound: 1
-          }
-          return payload
+     async GetPost(id: string): Promise<PostType[]> {
+          const result = this.posts.filter(post => post._id === id);
+          return result;
+     }
+
+     // function to get all posts or a specific user post
+     async GetAllPost(page: number, limit: number): Promise<PaginatedResponse> {
+          const response = await LocalPaginate(this.posts, page, limit);
+          return response;
      }
 
      // function to get all user posts
-     async GetUserPosts(email: string): Promise<PaginatedResponse> {
-          const payload: PaginatedResponse = {
-               currentPage: 1,
-               hasMore: false,
-               limit: 1,
-               results: [],
-               totalFound: 1
-          }
-          return payload
+     async GetUserPosts(email: string, page: number, limit: number): Promise<PaginatedResponse> {
+
+          const userPosts = this.users.find(user => user.email === email);
+
+          const results = await LocalPaginate(userPosts?.posts, page, limit);
+          
+          return results;
      }
 }
 
