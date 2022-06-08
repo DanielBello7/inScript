@@ -18,12 +18,30 @@ class ImageController {
      // return image
      // gets user from req.user
      // uses :img
-     GetImage = (req: RequestInterface, res: Response) => {}
+     GetImage = (req: RequestInterface, res: Response) => {
+
+          try {
+
+
+          } catch (error: any) {
+               Log.error(error);
+               return res.status(500).json({msg: error.message})
+          }
+     }
 
 
      // post an image
      // gets user from req.user
-     PostImage = (req: RequestInterface, res: Response) => {}
+     PostImage = (req: RequestInterface, res: Response) => {
+
+          try {
+
+
+          } catch (error: any) {
+               Log.error(error);
+               return res.status(500).json({msg: error.message})
+          }
+     }
 }
 
 
