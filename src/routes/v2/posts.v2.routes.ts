@@ -15,7 +15,7 @@ const router = express.Router();
 
 
 // default return
-export default (conn: DatabaseType) => {
+export default (conn: DatabaseType) => { 
 
      const post = new PostController(conn);
 

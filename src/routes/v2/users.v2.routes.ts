@@ -37,7 +37,7 @@ export default (conn: DatabaseType) => {
      router.get('/:userID', __verifyUser, user.GetUser);
 
      // route to get user connections --[GET]
-     router.get('/connections', __verifyUser, user.GetUserConnections);
+     router.get('/connections/:userID', __verifyUser, user.GetUserConnections);
 
      // route to add connections --[PUT]
      router.put('/connections/:ID', __verifyUser, user.AddConnection);

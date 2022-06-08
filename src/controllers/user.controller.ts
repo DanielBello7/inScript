@@ -123,6 +123,7 @@ class UserController {
 
      // get all user connections
      // gets user id from req.user
+     // uses :userID
      GetUserConnections = (req: RequestInterface, res: Response) => {}
 
      // add a new connection

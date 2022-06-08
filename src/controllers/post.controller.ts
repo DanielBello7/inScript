@@ -14,7 +14,7 @@ class PostController {
           this.conn = connection;
      }
 
-     // create post
+     // create post 
      // gets message from body
      // gets user from req.user
      NewPost = (req: RequestInterface, res: Response) => {}
