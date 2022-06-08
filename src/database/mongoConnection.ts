@@ -57,15 +57,10 @@ class MongoConnection implements DatabaseType {
           return false;
      }
 
-     async NewPost(data: NewPostType): Promise<PaginatedResponse> {
-          const payload: PaginatedResponse = {
-               currentPage: 1,
-               hasMore: false,
-               limit: 1,
-               results: [],
-               totalFound: 1
-          }
-          return payload
+
+
+     async NewPost(data: NewPostType): Promise<PostType | false> {
+          return false;
      }
 
      async GetPost(id?: string | undefined): Promise<PaginatedResponse> {

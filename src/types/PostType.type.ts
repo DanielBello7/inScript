@@ -3,6 +3,7 @@
 
 // post type
 export type PostType = {
+     _id: string,
      text?: string,
      createdBy: string,
      likes: number,

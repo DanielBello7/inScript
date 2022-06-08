@@ -9,7 +9,8 @@ import {
 } from "./UserType.type";
 
 import {
-     NewPostType,
+     NewPostType, 
+     PostType,
 } from './PostType.type';
 
 
@@ -31,7 +32,7 @@ export type DatabaseType = {
      DeleteUser: (email: string) => Promise<boolean>,
      ModifyUser: (email: string, details: ModifyDataType) => Promise<boolean>,
 
-     NewPost: (data: NewPostType) => Promise<PaginatedResponse>,
+     NewPost: (data: NewPostType) => Promise<PostType | false>,
      GetPost: (id?: string) => Promise<PaginatedResponse>,
      GetUserPosts: (email: string) => Promise<PaginatedResponse>
 }

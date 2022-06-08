@@ -109,16 +109,22 @@ class DevelopmentAPI implements DatabaseType {
           return true
      }
 
+
+
      // function to add post
-     async NewPost(data: NewPostType): Promise<PaginatedResponse> {
-          const payload: PaginatedResponse = {
-               currentPage: 1,
-               hasMore: false,
-               limit: 1,
-               results: [],
-               totalFound: 1
+     async NewPost(data: NewPostType): Promise<PostType | false> {
+          const newPost = {
+               ...data,
+               likedBy: [],
+               repostedBy: [],
+               comments: [],
+               _id: `${Math.random()}`,
+               createdAt: new Date()
           }
-          return payload
+
+          this.posts.push(newPost);
+
+          return newPost;
      }
 
      // function to get all posts or a specific user post

@@ -22,7 +22,9 @@ export default (conn: DatabaseType) => {
      // this creats a new post ---[POST]
      router.post('/', 
      [ 
-          check('message').trim().escape() 
+          check('text').trim().isString().escape(),
+          check('postType').isString().trim().escape(),
+          check('createdBy').isString().trim().escape()
      ], 
      ValidateRequest,
      __verifyUser,

@@ -6,6 +6,7 @@ import { DatabaseType } from '../types/Database.type';
 import { RequestInterface } from '../types/UserType.type';
 import { Request, Response } from 'express';
 import Log from '../config/bunyan.config';
+import { NewPostType } from '../types/PostType.type';
 
 
 class PostController {
@@ -17,7 +18,29 @@ class PostController {
      // create post 
      // gets message from body
      // gets user from req.user
-     NewPost = (req: RequestInterface, res: Response) => {}
+     NewPost = async (req: RequestInterface, res: Response) => {
+
+          const newPost: NewPostType = {
+               createdBy: req.user.email,
+               postType: req.body.postType,
+               text: req.body.text,
+               likes: 0,
+               reposts: 0
+          }
+
+          try {
+
+               const response = await this.conn.NewPost(newPost);
+
+               if (!response) return res.status(400).json({msg: 'error making post'});
+
+               return res.json({payload: response});
+
+          } catch (error: any) {
+               Log.error(error);
+               return res.status(500).json({msg: error.message});
+          }
+     }
 
 
      // delete post
