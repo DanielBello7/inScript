@@ -10,6 +10,8 @@ import {
      ModifyDataType 
 } from "../types/UserType.type";
 import { NewPostType, PostType } from "../types/PostType.type";
+import { NewComment, CommentType } from "../types/CommentType.type";
+import { NewImage, ImageType } from "../types/ImageType.type";
 
 
 
@@ -110,7 +112,7 @@ class DevelopmentAPI implements DatabaseType {
 
 
 
-     // function to add post
+     // Posts
      async NewPost(data: NewPostType): Promise<PostType | false> {
           const newPost = {
                ...data,
@@ -126,19 +128,16 @@ class DevelopmentAPI implements DatabaseType {
           return newPost;
      }
 
-     // function to get all posts or a specific user post
      async GetPost(id: string): Promise<PostType[]> {
           const result = this.posts.filter(post => post._id === id);
           return result;
      }
 
-     // function to get all posts or a specific user post
      async GetAllPost(page: number, limit: number): Promise<PaginatedResponse> {
           const response = await LocalPaginate(this.posts, page, limit);
           return response;
      }
 
-     // function to get all user posts
      async GetUserPosts(email: string, page: number, limit: number): Promise<PaginatedResponse> {
 
           const userPosts = this.users.find(user => user.email === email);
@@ -146,6 +145,78 @@ class DevelopmentAPI implements DatabaseType {
           const results = await LocalPaginate(userPosts?.posts, page, limit);
           
           return results;
+     }
+
+     async DeletePost (id: string, email: string): Promise<boolean> {
+          return false;
+     }
+
+     async LikePost(id: string, email: string): Promise<boolean> {
+          return false
+     }
+
+     async UnlikePost(id: string, email: string): Promise<boolean> {
+          return false
+     }
+
+     async RepostPost(id: string, email: string): Promise<boolean> {
+          return false
+     }
+
+     async UnRepostPost(id: string, email: string): Promise<boolean> {
+          return false
+     }
+
+
+     // comments
+     async CreateComment(data: NewComment): Promise<CommentType> {
+          return {} as CommentType;
+     }
+
+     async GetComment(id: string): Promise<CommentType[]> {
+          return [{} as CommentType];
+     }
+
+     async GetPostComments(id: string, page: number, limit: number): Promise<PaginatedResponse> {
+          return {} as PaginatedResponse
+     }
+
+     async GetUserComments(email: string, page: number, limit: number): Promise<PaginatedResponse> {
+          return {} as PaginatedResponse
+     }
+
+     async LikeComment(commentId: string, email: string): Promise<boolean> {
+          return false;
+     }
+
+     async UnLikeComment(commentId: string, email: string): Promise<boolean> {
+          return false;
+     }
+
+     async RepostComment(commentId: string, email: string): Promise<boolean> {
+          return false;
+     }
+
+     async UnRepostComment(commentId: string, email: string): Promise<boolean> {
+          return false;
+     }
+
+     async DeleteComment(commentId: string, email: string): Promise<boolean> {
+          return false;
+     }
+
+
+     // Image / Uploads
+     async NewUpload(data: NewImage): Promise<ImageType> {
+          return {} as ImageType;
+     }
+
+     async GetImage(imgId: string): Promise<ImageType[]> {
+          return [{} as ImageType]
+     }
+
+     async DeleteImage(imgId: string, email: string): Promise<boolean> {
+          return false;
      }
 }
 

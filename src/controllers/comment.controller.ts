@@ -13,7 +13,7 @@ class CommentController {
      public conn;
      constructor(connection: DatabaseType) {
           this.conn = connection;
-     }
+     } 
 
      // new comment
      // gets postID and message from body

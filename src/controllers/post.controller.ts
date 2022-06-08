@@ -3,7 +3,7 @@
 
 import { DatabaseType } from '../types/Database.type';
 import { RequestInterface } from '../types/UserType.type';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { NewPostType } from '../types/PostType.type';
 import Log from '../config/bunyan.config';
 
@@ -79,8 +79,6 @@ class PostController {
 
           const limit = parseInt(req.query.limit as string);
 
-          if (!user) return res.status(400).json({msg: 'user id required'});
-
           try {
 
                const response = await this.conn.GetUserPosts(user, page?page:1, limit?limit:1)
@@ -93,29 +91,95 @@ class PostController {
           }
      }
 
-     DeletePost = (req: RequestInterface, res: Response) => {}
+     DeletePost = async (req: RequestInterface, res: Response) => {
 
-     // like a post
-     // gets user from req.user
-     // uses :postID
-     LikePost = (req: RequestInterface, res: Response) => {}
+          const postID = req.params.postID;
 
+          try {
 
-     // unlike a post
-     // uses :postID
-     UnlikePost = (req: RequestInterface, res: Response) => {}
+               const response = await this.conn.DeletePost(postID, req.user.email);
 
+               if (!response) return res.status(400).json({msg: 'error deleting post'});
 
-     // repost a post
-     // gets user from req.user
-     // uses :postID
-     RepostPost = (req: RequestInterface, res: Response) => {}
+               return res.json({msg: 'post deleted', success: 1});
+               
+          } catch (error: any) {
+               Log.error(error);
+               return res.status(500).json({msg: error.message});
+          }
+     }
 
+     LikePost = async (req: RequestInterface, res: Response) => {
 
-     // un-repost a post
-     // gets user from req.user
-     // uses :postID
-     UnRepostPost = (req: Request, res: Response) => {}
+          const postID = req.params.postID;
+
+          try {
+
+               const response = await this.conn.LikePost(postID, req.user.email);
+
+               if (!response) return res.status(400).json({msg: 'error liking post'});
+
+               return res.json({msg: 'successful', success: 1});
+               
+          } catch (error: any) {
+               Log.error(error);
+               return res.status(500).json({msg: error.message});
+          }
+     }
+
+     UnlikePost = async (req: RequestInterface, res: Response) => {
+
+          const postID = req.params.postID;
+
+          try {
+
+               const response = await this.conn.UnlikePost(postID, req.user.email);
+
+               if (!response) return res.status(400).json({msg: 'error unliking post'});
+
+               return res.json({msg: 'successful', success: 1});
+               
+          } catch (error: any) {
+               Log.error(error);
+               return res.status(500).json({msg: error.message});
+          }
+     }
+
+     RepostPost = async (req: RequestInterface, res: Response) => {
+
+          const postID = req.params.postID;
+
+          try {
+
+               const response = await this.conn.RepostPost(postID, req.user.email);
+
+               if (!response) return res.status(400).json({msg: 'error reposting'});
+
+               return res.json({msg: 'repost successful', success: 1});
+               
+          } catch (error: any) {
+               Log.error(error);
+               return res.status(500).json({msg: error.message});
+          }
+     }
+
+     UnRepostPost = async (req: RequestInterface, res: Response) => {
+
+          const postID = req.params.postID;
+
+          try {
+
+               const response = await this.conn.UnRepostPost(postID, req.user.email);
+
+               if (!response) return res.status(400).json({msg: 'error unreposting'});
+
+               return res.json({msg: 'successful', success: 1});
+               
+          } catch (error: any) {
+               Log.error(error);
+               return res.status(500).json({msg: error.message});
+          }
+     }
 
 }
 

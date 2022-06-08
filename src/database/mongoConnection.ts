@@ -10,7 +10,9 @@ import {
      NewUser, 
      ModifyDataType 
 } from '../types/UserType.type';
+import { CommentType, NewComment } from '../types/CommentType.type';
 import { NewPostType, PostType } from '../types/PostType.type';
+import { ImageType, NewImage } from '../types/ImageType.type';
 
 
 class MongoConnection implements DatabaseType {
@@ -22,6 +24,7 @@ class MongoConnection implements DatabaseType {
      }
 
 
+     // User
      async GetUser(email: string): Promise<UserType[]> {
           let a: UserType = {
                _id: '',
@@ -58,7 +61,7 @@ class MongoConnection implements DatabaseType {
      }
 
 
-
+     // Posts
      async NewPost(data: NewPostType): Promise<PostType | false> {
           return false;
      }
@@ -89,6 +92,78 @@ class MongoConnection implements DatabaseType {
                totalFound: 1
           }
           return payload
+     }
+
+     async DeletePost(id: string, email: string): Promise<boolean> {
+          return false;
+     }
+
+     async LikePost(id: string, email: string): Promise<boolean> {
+          return false
+     }
+
+     async UnlikePost(id: string, email: string): Promise<boolean> {
+          return false
+     }
+
+     async RepostPost(id: string, email: string): Promise<boolean> {
+          return false
+     }
+
+     async UnRepostPost(id: string, email: string): Promise<boolean> {
+          return false
+     }
+
+
+     // Comments
+     async CreateComment(data: NewComment): Promise<CommentType> {
+          return {} as CommentType;
+     }
+
+     async GetComment(id: string): Promise<CommentType[]> {
+          return [{} as CommentType];
+     }
+
+     async GetPostComments(id: string, page: number, limit: number): Promise<PaginatedResponse> {
+          return {} as PaginatedResponse
+     }
+
+     async GetUserComments(email: string, page: number, limit: number): Promise<PaginatedResponse> {
+          return {} as PaginatedResponse
+     }
+
+     async LikeComment(commentId: string, email: string): Promise<boolean> {
+          return false;
+     }
+
+     async UnLikeComment(commentId: string, email: string): Promise<boolean> {
+          return false;
+     }
+
+     async RepostComment(commentId: string, email: string): Promise<boolean> {
+          return false;
+     }
+
+     async UnRepostComment(commentId: string, email: string): Promise<boolean> {
+          return false;
+     }
+
+     async DeleteComment(commentId: string, email: string): Promise<boolean> {
+          return false;
+     }
+
+
+     // Image / Uploads
+     async NewUpload(data: NewImage): Promise<ImageType> {
+          return {} as ImageType;
+     }
+
+     async GetImage(imgId: string): Promise<ImageType[]> {
+          return [{} as ImageType]
+     }
+
+     async DeleteImage(imgId: string, email: string): Promise<boolean> {
+          return false;
      }
 }
 

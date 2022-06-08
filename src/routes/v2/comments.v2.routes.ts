@@ -13,7 +13,7 @@ import { DatabaseType } from '../../types/Database.type';
 const router = express.Router();
 
 
-// main export
+// main export 
 export default (conn: DatabaseType) => {
 
      const comment = new CommentController(conn);

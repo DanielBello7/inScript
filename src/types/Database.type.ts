@@ -13,6 +13,16 @@ import {
      PostType,
 } from './PostType.type';
 
+import {
+     NewComment,
+     CommentType
+} from './CommentType.type';
+
+import {
+     ImageType,
+     NewImage
+} from './ImageType.type'
+
 
 // paginator response type
 export type PaginatedResponse = {
@@ -35,5 +45,25 @@ export type DatabaseType = {
      NewPost: (data: NewPostType) => Promise<PostType | false>,
      GetPost: (id: string) => Promise<PostType[]>,
      GetAllPost: (page: number, limit: number) => Promise<PaginatedResponse>,
-     GetUserPosts: (email: string, page: number, limit: number) => Promise<PaginatedResponse>
+     GetUserPosts: (email: string, page: number, limit: number) => Promise<PaginatedResponse>,
+
+     DeletePost: (id: string, email: string) => Promise<boolean>,
+     LikePost: (id: string, email: string) => Promise<boolean>,
+     UnlikePost: (id: string, email: string) => Promise<boolean>,
+     RepostPost: (id: string, email: string) => Promise<boolean>,
+     UnRepostPost: (id: string, email: string) => Promise<boolean>,
+
+     CreateComment: (data: NewComment) => Promise<CommentType>,
+     GetComment: (id: string) => Promise<CommentType[]>,
+     GetPostComments: (id: string, page: number, limit: number) => Promise<PaginatedResponse>,
+     GetUserComments: (email: string, page: number, limit: number) => Promise<PaginatedResponse>,
+     LikeComment: (commentId: string, email: string) => Promise<boolean>,
+     UnLikeComment: (commentId: string, email: string) => Promise<boolean>,
+     RepostComment: (commentId: string, email: string) => Promise<boolean>,
+     UnRepostComment: (commentId: string, email: string) => Promise<boolean>,
+     DeleteComment: (commentId: string, email: string) => Promise<boolean>,
+
+     NewUpload: (data: NewImage) => Promise<ImageType>,
+     GetImage: (imgId: string) => Promise<ImageType[]>,
+     DeleteImage: (imgId: string, email: string) => Promise<boolean>
 }
