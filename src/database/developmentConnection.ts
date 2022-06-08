@@ -2,7 +2,7 @@
 
 
 // imports
-import { DatabaseType } from "../types/Database.type";
+import { DatabaseType, PaginatedResponse } from "../types/Database.type";
 import { LocalPaginate } from '../middlewares/Paginate';
 import bcrypt from 'bcrypt';
 import { 
@@ -10,6 +10,7 @@ import {
      NewUser, 
      ModifyDataType 
 } from "../types/UserType.type";
+import { NewPostType, PostType } from "../types/PostType.type";
 
 
 
@@ -17,6 +18,8 @@ import {
 class DevelopmentAPI implements DatabaseType {
 
      public users: UserType[];
+
+     public posts: PostType[];
 
      constructor() {
           this.users = [
@@ -45,11 +48,13 @@ class DevelopmentAPI implements DatabaseType {
                     // password: 'joshua'
                },
           ]
+
+          this.posts = []
      }
 
 
      // function to get users
-     async GetUsers(page: number = 1, limit: number = 5): Promise<any> {
+     async GetUsers(page: number, limit: number): Promise<any> {
           const response = await LocalPaginate(this.users, page, limit);
           return response;
      }
@@ -102,6 +107,42 @@ class DevelopmentAPI implements DatabaseType {
      // function to remove a user from the list
      async DeleteUser(email: string): Promise<boolean> {
           return true
+     }
+
+     // function to add post
+     async NewPost(data: NewPostType): Promise<PaginatedResponse> {
+          const payload: PaginatedResponse = {
+               currentPage: 1,
+               hasMore: false,
+               limit: 1,
+               results: [],
+               totalFound: 1
+          }
+          return payload
+     }
+
+     // function to get all posts or a specific user post
+     async GetPost(id?: string | undefined): Promise<PaginatedResponse> {
+          const payload: PaginatedResponse = {
+               currentPage: 1,
+               hasMore: false,
+               limit: 1,
+               results: [],
+               totalFound: 1
+          }
+          return payload
+     }
+
+     // function to get all user posts
+     async GetUserPosts(email: string): Promise<PaginatedResponse> {
+          const payload: PaginatedResponse = {
+               currentPage: 1,
+               hasMore: false,
+               limit: 1,
+               results: [],
+               totalFound: 1
+          }
+          return payload
      }
 }
 

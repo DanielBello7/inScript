@@ -8,6 +8,10 @@ import {
      ModifyDataType 
 } from "./UserType.type";
 
+import {
+     NewPostType,
+} from './PostType.type';
+
 
 // paginator response type
 export type PaginatedResponse = {
@@ -22,8 +26,12 @@ export type PaginatedResponse = {
 // main database type
 export type DatabaseType = {
      GetUser: (email: string) => Promise<UserType[]>,
-     GetUsers: () => Promise<PaginatedResponse>,
+     GetUsers: (page: number, limit: number) => Promise<PaginatedResponse>,
      CreateUser: (user: NewUser) => Promise<UserType | false>,
      DeleteUser: (email: string) => Promise<boolean>,
-     ModifyUser: (email: string, details: ModifyDataType) => Promise<boolean>
+     ModifyUser: (email: string, details: ModifyDataType) => Promise<boolean>,
+
+     NewPost: (data: NewPostType) => Promise<PaginatedResponse>,
+     GetPost: (id?: string) => Promise<PaginatedResponse>,
+     GetUserPosts: (email: string) => Promise<PaginatedResponse>
 }

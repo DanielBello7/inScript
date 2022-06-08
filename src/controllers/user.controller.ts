@@ -88,10 +88,16 @@ class UserController {
      }
 
      // get all users controller
+     // uses query page
+     // uses query limit
      GetUsers = async (req: RequestInterface, res: Response) => {
+
+          const page = parseInt(req.query.page as string);
+          const limit = parseInt(req.query.limit as string);
+          
           try {
 
-               const response = await this.conn.GetUsers();
+               const response = await this.conn.GetUsers(page ? page : 1, limit ? limit : 5);
                return res.json({payload: response});
 
           } catch (error: any) {

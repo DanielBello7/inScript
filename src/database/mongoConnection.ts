@@ -10,6 +10,7 @@ import {
      NewUser, 
      ModifyDataType 
 } from '../types/UserType.type';
+import { NewPostType, PostType } from '../types/PostType.type';
 
 
 class MongoConnection implements DatabaseType {
@@ -32,7 +33,7 @@ class MongoConnection implements DatabaseType {
           return [a]
      }
 
-     async GetUsers(): Promise<PaginatedResponse> {
+     async GetUsers(page: number, limit: number): Promise<PaginatedResponse> {
 
           const payload: PaginatedResponse = {
                currentPage: 1,
@@ -54,6 +55,39 @@ class MongoConnection implements DatabaseType {
 
      async DeleteUser(email: string): Promise<boolean> {
           return false;
+     }
+
+     async NewPost(data: NewPostType): Promise<PaginatedResponse> {
+          const payload: PaginatedResponse = {
+               currentPage: 1,
+               hasMore: false,
+               limit: 1,
+               results: [],
+               totalFound: 1
+          }
+          return payload
+     }
+
+     async GetPost(id?: string | undefined): Promise<PaginatedResponse> {
+          const payload: PaginatedResponse = {
+               currentPage: 1,
+               hasMore: false,
+               limit: 1,
+               results: [],
+               totalFound: 1
+          }
+          return payload
+     }
+
+     async GetUserPosts(email: string): Promise<PaginatedResponse> {
+          const payload: PaginatedResponse = {
+               currentPage: 1,
+               hasMore: false,
+               limit: 1,
+               results: [],
+               totalFound: 1
+          }
+          return payload
      }
 }
 

@@ -15,18 +15,20 @@ import ServerApp from '../server';
 import http from 'http';
 import envConfig from '../config/env.config';
 import MongoConnection from '../database/mongoConnection';
-
+import DevelopmentAPI from '../database/developmentConnection';
 
 // use the env variables
 envConfig();
 
 // create instance of the database connection
 const conn = new MongoConnection(process.env.URL as string);
+const dev = new DevelopmentAPI();
 
 
 // get app from server app function
-const serverApp = ServerApp(conn);
+const serverApp = ServerApp(dev);
 const server = http.createServer(serverApp);
+
 
 const port = process.env.PORT || 2022;
 serverApp.set('port', port);
