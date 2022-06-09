@@ -2,7 +2,7 @@
 
 
 // imports 
-import { UserModel } from "../models/User.models";
+import UserModel from "../models/User.models";
 
 
 

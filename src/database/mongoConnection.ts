@@ -30,30 +30,54 @@ class MongoConnection implements DatabaseType {
 
      // User
      async GetUser(email: string): Promise<UserType[]> {
-          let a: UserType = {
-               _id: '',
-               email: '',
-               firstName: '',
-               lastName: '',
-               password: ''
+
+          const response = await UserModel.find({email: email});
+
+          if (response.length <= 0) return [];
+
+          const user: UserType = {
+               _id: response[0]._id,
+               email: response[0].email,
+               firstName: response[0].firstName,
+               lastName: response[0].lastName,
+               password: response[0].password
           }
-          return [a]
+
+          return [user]
      }
 
      async GetUsers(page: number, limit: number): Promise<PaginatedResponse> {
+          const startIndex = (page - 1) * limit;
+          const endIndex = page * limit;
+
+          const total = await UserModel.countDocuments().exec();
+
+          const response = await UserModel.find().limit(limit).skip(startIndex).exec();
 
           const payload: PaginatedResponse = {
-               currentPage: 1,
-               hasMore: false,
-               limit: 1,
-               results: [],
-               totalFound: 1
+               currentPage: page,
+               hasMore: endIndex < total,
+               limit: limit,
+               results: response,
+               totalFound: total
           }
           return payload
      }
 
      async CreateUser(user: NewUser): Promise<UserType | false> {
-          return false
+
+          const newUser = new UserModel({
+               firstName: user.firstName,
+               lastName: user.lastName,
+               email: user.email,
+               password: user.password
+          });
+
+          const response = await newUser.save();
+
+          if (!response) return false
+
+          return response
      }
 
      async ModifyUser(email: string, data: ModifyDataType): Promise<boolean> {
