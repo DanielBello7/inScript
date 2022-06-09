@@ -25,7 +25,7 @@ class MongoConnection implements DatabaseType {
           mongoose.connect(url, {}, () => {
                Log.info('connected to database');
           });
-     }
+     } 
 
 
      // User

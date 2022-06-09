@@ -63,7 +63,7 @@ class UserController {
                Log.info(error);
                return res.status(500).json({msg: error.message});
           }
-     }
+     } 
 
      // get single user controller
      // uses :userID
