@@ -31,6 +31,7 @@
     "@types/uuid": "^8.3.4",
     "bcrypt": "^5.0.1",
     "bunyan": "^1.8.15",
+    "cloudinary": "^1.30.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",

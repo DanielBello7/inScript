@@ -25,7 +25,7 @@ export default (conn: DatabaseType) => {
      router.use('/users', users(conn));
 
      // router for images
-     router.use('/imgs', img(conn));
+     router.use('/img', img(conn));
 
      // router for posts
      router.use('/posts', posts(conn));
