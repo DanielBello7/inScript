@@ -1,7 +1,7 @@
 
 
 
-import { CommentModel } from "../models/Comments.models";
+import CommentModel from "../models/Comments.models";
 import { Post } from "./PostService.service";
 import { User } from "./UserService.service";
 

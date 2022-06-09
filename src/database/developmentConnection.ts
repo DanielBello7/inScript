@@ -169,7 +169,7 @@ class DevelopmentAPI implements DatabaseType {
 
 
      // comments
-     async CreateComment(data: NewComment): Promise<CommentType> {
+     async CreateComment(data: NewComment): Promise<CommentType | false> {
           return {} as CommentType;
      }
 

@@ -207,21 +207,111 @@ class MongoConnection implements DatabaseType {
      }
 
      async UnlikePost(id: string, user: string): Promise<boolean> {
-          return false
+
+          const dislike = await PostModel.updateOne(
+               { _id: id },
+               { $inc: {likes: -1} }
+          );
+
+          if (dislike.modifiedCount < 1) return false;
+
+          const removeUserFromLikedList = await PostModel.updateOne(
+               { _id: id },
+               { $pull: {likedBy: user} }
+          );
+
+          if (removeUserFromLikedList.modifiedCount < 1) return false;
+
+          const updateUser = await UserModel.updateOne(
+               { _id: user },
+               { $pull: {likedPosts: id} }
+          );
+
+          if (updateUser.modifiedCount < 1) return false;
+
+          return true;
      }
 
      async RepostPost(id: string, user: string): Promise<boolean> {
-          return false
+
+          const updateSelectedPost = await PostModel.updateOne(
+               { _id: id },
+               { $inc: {reposts: 1} }
+          );
+
+          if (updateSelectedPost.modifiedCount < 1) return false;
+
+          const addUserToRepostList = await PostModel.updateOne(
+               { _id: id },
+               { $push: {repostedBy: user} }
+          );
+
+          if (addUserToRepostList.modifiedCount < 1) return false;
+
+          const updateUser = await UserModel.updateOne(
+               { _id: user },
+               { $push: {repostedPosts: id} }
+          );
+
+          if (updateUser.modifiedCount < 1) return false;
+
+          return true;
      }
 
      async UnRepostPost(id: string, user: string): Promise<boolean> {
-          return false
+
+          const updatePostRepost = await PostModel.updateOne(
+               { _id: id },
+               { $inc: {reposts: -1} }
+          );
+
+          if (updatePostRepost.modifiedCount < 1) return false;
+
+          const addUser = await PostModel.updateOne(
+               { _id: id },
+               { $pull: {repostedBy: user} }
+          );
+
+          if (addUser.modifiedCount < 1) return false;
+
+          const updateUser = await UserModel.updateOne(
+               { _id: user },
+               { $pull: {repostedPosts: id} }
+          );
+
+          if (updateUser.modifiedCount < 1) return false;
+
+          return true;
      }
 
 
      // Comments
-     async CreateComment(data: NewComment): Promise<CommentType> {
-          return {} as CommentType;
+     async CreateComment(data: NewComment): Promise<CommentType | false> {
+          const newComment = new CommentsModel({
+               ...data
+          });
+
+          const response = await newComment.save();
+
+          if (!response) return false;
+
+          const commentID = response._id as string;
+
+          const updateUser = await UserModel.updateOne(
+               {_id: data.createdBy },
+               { $push: {comments: commentID} }
+          );
+
+          if (updateUser.modifiedCount < 1) return false;
+
+          const updatePost = await PostModel.updateOne(
+               { _id: data.for },
+               { $push: {comments: commentID} }
+          );
+
+          if (updatePost.modifiedCount < 1) return false;
+
+          return response;
      }
 
      async GetComment(id: string): Promise<CommentType[]> {

@@ -97,7 +97,7 @@ class PostController {
 
           try {
 
-               const response = await this.conn.DeletePost(postID, req.user.email);
+               const response = await this.conn.DeletePost(postID, req.user._id);
 
                if (!response) return res.status(400).json({msg: 'error deleting post'});
 
