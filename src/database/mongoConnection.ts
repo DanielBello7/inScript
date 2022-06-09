@@ -314,34 +314,42 @@ class MongoConnection implements DatabaseType {
           return response;
      }
 
+     // not done
      async GetComment(id: string): Promise<CommentType[]> {
           return [{} as CommentType];
      }
 
+     // not done
      async GetPostComments(id: string, page: number, limit: number): Promise<PaginatedResponse> {
           return {} as PaginatedResponse
      }
 
+     // not done
      async GetUserComments(email: string, page: number, limit: number): Promise<PaginatedResponse> {
           return {} as PaginatedResponse
      }
 
+     // not done
      async LikeComment(commentId: string, email: string): Promise<boolean> {
           return false;
      }
 
+     // not done
      async UnLikeComment(commentId: string, email: string): Promise<boolean> {
           return false;
      }
 
+     // not done
      async RepostComment(commentId: string, email: string): Promise<boolean> {
           return false;
      }
 
+     // not done
      async UnRepostComment(commentId: string, email: string): Promise<boolean> {
           return false;
      }
 
+     // not done
      async DeleteComment(commentId: string, email: string): Promise<boolean> {
           return false;
      }
@@ -349,6 +357,10 @@ class MongoConnection implements DatabaseType {
 
      // Image / Uploads
      async NewUpload(data: NewImage): Promise<ImageType> {
+
+          const newImage = new ImageModel({
+               ...data
+          })
           return {} as ImageType;
      }
 

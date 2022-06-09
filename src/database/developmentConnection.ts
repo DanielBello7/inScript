@@ -207,7 +207,7 @@ class DevelopmentAPI implements DatabaseType {
 
 
      // Image / Uploads
-     async NewUpload(data: NewImage): Promise<ImageType> {
+     async NewUpload(data: NewImage): Promise<ImageType | false> {
           return {} as ImageType;
      }
 

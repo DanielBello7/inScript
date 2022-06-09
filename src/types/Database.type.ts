@@ -63,7 +63,7 @@ export type DatabaseType = {
      UnRepostComment: (commentId: string, email: string) => Promise<boolean>,
      DeleteComment: (commentId: string, email: string) => Promise<boolean>,
 
-     NewUpload: (data: NewImage) => Promise<ImageType>,
+     NewUpload: (data: NewImage) => Promise<ImageType | false>,
      GetImage: (imgId: string) => Promise<ImageType[]>,
      DeleteImage: (imgId: string, email: string) => Promise<boolean>
 }
