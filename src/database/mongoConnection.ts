@@ -356,12 +356,22 @@ class MongoConnection implements DatabaseType {
 
 
      // Image / Uploads
-     async NewUpload(data: NewImage): Promise<ImageType> {
+     async NewUpload(data: NewImage): Promise<ImageType | false> {
 
-          const newImage = new ImageModel({
-               ...data
-          })
-          return {} as ImageType;
+          const newImage = new ImageModel({...data});
+
+          const response = newImage.save();
+
+          if (!response) return false;
+
+          const updateUser = await UserModel.updateOne(
+               { _id: data.createdBy },
+               { $push: {uploads: response._id} }
+          );
+
+          if (updateUser.modifiedCount < 1) return false;
+
+          return response;
      }
 
      async GetImage(imgId: string): Promise<ImageType[]> {
