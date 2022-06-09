@@ -3,7 +3,7 @@
 
 // imports
 import { DatabaseType } from '../types/Database.type';
-import { RequestInterface, UserType } from '../types/UserType.type';
+import { RequestInterface } from '../types/UserType.type';
 import { Response } from 'express';
 import Log from "../config/bunyan.config";
 

@@ -13,6 +13,10 @@ import {
 import { CommentType, NewComment } from '../types/CommentType.type';
 import { NewPostType, PostType } from '../types/PostType.type';
 import { ImageType, NewImage } from '../types/ImageType.type';
+import CommentsModel from '../models/Comments.models';
+import ImageModel from '../models/Image.models';
+import PostModel from '../models/Post.models';
+import UserModel from '../models/User.models';
 
 
 class MongoConnection implements DatabaseType {
