@@ -21,8 +21,8 @@ export default (conn: DatabaseType) => {
      // route posts a comment ---[POST]
      router.post('/', 
      [
-          check('postID').trim().isString().escape().withMessage('post id required'),
-          check('message').trim().isString().escape().withMessage('comment required')
+          check('for').trim().isString().escape().withMessage('post id required'),
+          check('text').trim().isString().escape().withMessage('comment required')
      ], 
      ValidateRequest,
      __verifyUser, 
