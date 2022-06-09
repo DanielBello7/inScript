@@ -375,9 +375,13 @@ class MongoConnection implements DatabaseType {
      }
 
      async GetImage(imgId: string): Promise<ImageType[]> {
-          return [{} as ImageType]
+
+          const getImage = await ImageModel.find({ _id: imgId });
+          
+          return getImage;
      }
 
+     // not done
      async DeleteImage(imgId: string, email: string): Promise<boolean> {
           return false;
      }
