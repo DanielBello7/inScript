@@ -38,7 +38,9 @@ class UserController {
 
                if (!response) return res.status(400).json({msg: 'error creating new user'});
 
-               return res.json({payload: response});
+               const { password, ...resUser } = response;
+
+               return res.json({payload: resUser});
 
           } catch (error: any) {
                Log.info(error);
@@ -97,7 +99,8 @@ class UserController {
           
           try {
 
-               const response = await this.conn.GetUsers(page ? page : 1, limit ? limit : 5);
+               const response = await this.conn.GetUsers(page?page:1, limit?limit:5);
+
                return res.json({payload: response});
 
           } catch (error: any) {

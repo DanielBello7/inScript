@@ -17,7 +17,7 @@ class PostController {
      NewPost = async (req: RequestInterface, res: Response) => {
 
           const newPost: NewPostType = {
-               createdBy: req.user.email,
+               createdBy: req.user._id,
                postType: req.body.postType,
                text: req.body.text,
                likes: 0,
@@ -115,7 +115,7 @@ class PostController {
 
           try {
 
-               const response = await this.conn.LikePost(postID, req.user.email);
+               const response = await this.conn.LikePost(postID, req.user._id);
 
                if (!response) return res.status(400).json({msg: 'error liking post'});
 
@@ -133,7 +133,7 @@ class PostController {
 
           try {
 
-               const response = await this.conn.UnlikePost(postID, req.user.email);
+               const response = await this.conn.UnlikePost(postID, req.user._id);
 
                if (!response) return res.status(400).json({msg: 'error unliking post'});
 
@@ -151,7 +151,7 @@ class PostController {
 
           try {
 
-               const response = await this.conn.RepostPost(postID, req.user.email);
+               const response = await this.conn.RepostPost(postID, req.user._id);
 
                if (!response) return res.status(400).json({msg: 'error reposting'});
 
@@ -169,7 +169,7 @@ class PostController {
 
           try {
 
-               const response = await this.conn.UnRepostPost(postID, req.user.email);
+               const response = await this.conn.UnRepostPost(postID, req.user._id);
 
                if (!response) return res.status(400).json({msg: 'error unreposting'});
 

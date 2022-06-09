@@ -10,7 +10,7 @@ class User {
      constructor() {}
 
 
-     // function to add a post to a user
+     // function to add a post to a user 
      async AddPost(userID: string, postID: string) {
 
 
@@ -35,7 +35,7 @@ class User {
 
           if (updateUser.modifiedCount <= 0) return false;
 
-          return updateUser
+          return updateUser 
      }
 
      

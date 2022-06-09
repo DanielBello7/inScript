@@ -2,7 +2,7 @@
 
 
 // imports
-import { PostModel } from "../models/Post.models";
+import PostModel from "../models/Post.models";
 import { User } from './UserService.service';
 import Log from "../config/bunyan.config";
 import mongoose from "mongoose";
