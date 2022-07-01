@@ -16,9 +16,7 @@ class CommentController {
           this.conn = connection;
      } 
 
-     // new comment
-     // gets for and text from body
-     // gets user from req.user
+     
      PostComment = async (req: RequestInterface, res: Response) => {
 
           const newComment: NewComment = {
@@ -29,7 +27,7 @@ class CommentController {
 
           try {
 
-               const response = await this.conn.CreateComment(newComment);
+               const response = await this.conn.CreateComment(newComment, req.body.type);
 
                return res.json({payload: response});
 
@@ -40,8 +38,7 @@ class CommentController {
      }
 
 
-     // retrieve a particular comment
-     // uses :commentID
+     
      GetComment = async (req: RequestInterface, res: Response) => {
 
           const commentID = req.params.commentID;
@@ -59,8 +56,7 @@ class CommentController {
      }
 
 
-     // get all the comments from a user
-     // uses :userID
+     
      GetUserComments = async (req: RequestInterface, res: Response) => {
 
           const user = req.params.userID;
@@ -82,8 +78,7 @@ class CommentController {
      }
 
 
-     // get comments for a particuar post
-     // uses :postID
+     
      GetPostComments = async (req: RequestInterface, res: Response) => {
 
           const postID = req.params.postID;
@@ -94,7 +89,28 @@ class CommentController {
 
           try {
 
-               const response = await this.conn.GetPostComments(postID, page?page:1, limit?limit:1);
+               const response = await this.conn.GetPostComments(postID, page?page:1, limit?limit:5);
+
+               return res.json({payload: response});
+
+
+          } catch (error: any) {
+               Log.error(error);
+               return res.status(500).json({msg: error.message})
+          }
+     }
+
+
+     GetAllCommentsForComment = async (req: RequestInterface, res: Response) => {
+          const commentID = req.params.commentID;
+
+          const page = parseInt(req.query.page as string);
+
+          const limit = parseInt(req.query.limit as string);
+
+          try {
+
+               const response = await this.conn.GetCommentComments(commentID, page?page:1, limit?limit:5);
 
                return res.json({payload: response});
 
@@ -226,7 +242,6 @@ class CommentController {
                return res.status(500).json({msg: error.message})
           }
      }
-
 
 }
 

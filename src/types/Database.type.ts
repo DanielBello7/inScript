@@ -53,9 +53,10 @@ export type DatabaseType = {
      RepostPost: (id: string, email: string) => Promise<boolean>,
      UnRepostPost: (id: string, email: string) => Promise<boolean>,
 
-     CreateComment: (data: NewComment) => Promise<CommentType | false>,
+     CreateComment: (data: NewComment, type: 'comment' | 'post') => Promise<CommentType | false>,
      GetComment: (id: string) => Promise<CommentType[]>,
      GetPostComments: (id: string, page: number, limit: number) => Promise<PaginatedResponse>,
+     GetCommentComments: (id: string, page: number, limit: number) => Promise<PaginatedResponse>,
      GetUserComments: (email: string, page: number, limit: number) => Promise<PaginatedResponse>,
      LikeComment: (commentId: string, email: string) => Promise<boolean>,
      UnLikeComment: (commentId: string, email: string) => Promise<boolean>,

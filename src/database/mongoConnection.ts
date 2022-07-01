@@ -5,11 +5,7 @@
 import Log from '../config/bunyan.config';
 import mongoose from 'mongoose';
 import { DatabaseType, PaginatedResponse } from '../types/Database.type';
-import { 
-     UserType, 
-     NewUser, 
-     ModifyDataType 
-} from '../types/UserType.type';
+import { UserType, NewUser, ModifyDataType } from '../types/UserType.type';
 import { CommentType, NewComment } from '../types/CommentType.type';
 import { NewPostType, PostType } from '../types/PostType.type';
 import { ImageType, NewImage } from '../types/ImageType.type';
@@ -21,30 +17,22 @@ import UserModel from '../models/User.models';
 
 class MongoConnection implements DatabaseType {
      constructor(url: string) {
-          // connect function
           mongoose.connect(url, {}, () => {
                Log.info('connected to database');
           });
      } 
 
 
-     // User
+     
      async GetUser(email: string): Promise<UserType[]> {
 
           const response = await UserModel.find({email: email});
 
           if (response.length <= 0) return [];
 
-          const user: UserType = {
-               _id: response[0]._id,
-               email: response[0].email,
-               firstName: response[0].firstName,
-               lastName: response[0].lastName,
-               password: response[0].password
-          }
-
-          return [user]
+          return [response[0]._doc];
      }
+
 
      async GetUsers(page: number, limit: number): Promise<PaginatedResponse> {
           const startIndex = (page - 1) * limit;
@@ -68,6 +56,7 @@ class MongoConnection implements DatabaseType {
           }
           return payload
      }
+
 
      async CreateUser(user: NewUser): Promise<UserType | false> {
 
@@ -137,7 +126,9 @@ class MongoConnection implements DatabaseType {
 
           const total = await PostModel.countDocuments().exec();
 
-          const response = await PostModel.find().limit(limit).skip(startIndex).exec();
+          const response = await PostModel.find().populate(
+               'createdBy', ['firstName', 'lastName', 'email']
+          ).limit(limit).skip(startIndex).exec();
 
           const payload: PaginatedResponse = {
                currentPage: page,
@@ -286,7 +277,7 @@ class MongoConnection implements DatabaseType {
 
 
      // Comments
-     async CreateComment(data: NewComment): Promise<CommentType | false> {
+     async CreateComment(data: NewComment, type: 'post' | 'comment'): Promise<CommentType | false> {
           const newComment = new CommentsModel({
                ...data
           });
@@ -304,24 +295,102 @@ class MongoConnection implements DatabaseType {
 
           if (updateUser.modifiedCount < 1) return false;
 
-          const updatePost = await PostModel.updateOne(
-               { _id: data.for },
-               { $push: {comments: commentID} }
-          );
+          if (type === 'post') {
+               const updatePost = await PostModel.updateOne(
+                    { _id: data.for },
+                    { $push: {comments: commentID} }
+               );               
+          }
 
-          if (updatePost.modifiedCount < 1) return false;
+          else {
+               const updateComment = await CommentsModel.updateOne(
+                    { _id: data.for },
+                    { $push: {comments: commentID} }
+               );
+          }
 
           return response;
      }
 
-     // not done
+
      async GetComment(id: string): Promise<CommentType[]> {
-          return [{} as CommentType];
+
+          const response = await CommentsModel.findOne({_id: id}).populate(
+               'createdBy', ['firstName', 'lastName', 'email']
+          );
+
+          return [response];
      }
 
-     // not done
+     
      async GetPostComments(id: string, page: number, limit: number): Promise<PaginatedResponse> {
-          return {} as PaginatedResponse
+
+          const startIndex = (page - 1) * limit;
+
+          const endIndex = page * limit;
+
+          const total = await PostModel.findOne({_id: id})
+
+          const mainTotal = total.comments.length;
+
+          const response = await PostModel.findOne({_id: id})
+          .select('comments')
+          .populate([
+               {
+                    path: 'comments',
+                    populate: {
+                         path: 'createdBy',
+                         select: ['firstName', 'lastName', 'email']
+                    }
+               }
+          ]);
+
+          const selectedPoints = response.comments.slice(startIndex, endIndex);
+
+          const payload: PaginatedResponse = {
+               currentPage: page,
+               hasMore: endIndex < mainTotal,
+               limit: limit,
+               results: selectedPoints,
+               totalFound: mainTotal
+          }
+
+          return payload;
+     }
+
+     async GetCommentComments(id: string, page: number, limit: number): Promise<PaginatedResponse> {
+
+          const startIndex = (page - 1) * limit;
+
+          const endIndex = page * limit;
+
+          const total = await CommentsModel.findOne({_id: id})
+
+          const mainTotal = total.comments.length;
+
+          const response = await CommentsModel.findOne({_id: id})
+          .select('comments')
+          .populate([
+               {
+                    path: 'comments',
+                    populate: {
+                         path: 'createdBy',
+                         select: ['firstName', 'lastName', 'email']
+                    }
+               }
+          ]);
+
+          const selectedPoints = response.comments.slice(startIndex, endIndex);
+
+          const payload: PaginatedResponse = {
+               currentPage: page,
+               hasMore: endIndex < mainTotal,
+               limit: limit,
+               results: selectedPoints,
+               totalFound: mainTotal
+          }
+
+          return payload;
      }
 
      // not done

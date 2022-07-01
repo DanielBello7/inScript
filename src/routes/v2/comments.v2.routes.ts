@@ -22,7 +22,8 @@ export default (conn: DatabaseType) => {
      router.post('/', 
      [
           check('for').trim().isString().escape().withMessage('post id required'),
-          check('text').trim().isString().escape().withMessage('comment required')
+          check('text').trim().isString().escape().withMessage('comment required'),
+          check('type').trim().isString().escape().withMessage('comment required')
      ], 
      ValidateRequest,
      __verifyUser, 
@@ -33,6 +34,9 @@ export default (conn: DatabaseType) => {
 
      // route for all comments of a particular post --[GET]
      router.get('/post/:postID', __verifyUser, comment.GetPostComments);
+
+     // route for all comments of a particular comment --[GET]
+     router.get('/comment/:commentID', __verifyUser, comment.GetAllCommentsForComment);
 
      // route for all single user comments ---[GET]
      router.get('/user/:userID', __verifyUser, comment.GetUserComments);

@@ -4,15 +4,30 @@
 // imports
 import { Request } from 'express';
 
+export type CreatedByType = {
+     email: string,
+     firstName: string,
+     lastName: string
+}
+
+export type ConnectionType = {
+     _id: string,
+     email: string,
+     firstName: string,
+     lastName: string,
+     connections: string[]
+}
+
 // user type
 export type UserType = {
      _id: string,
      firstName: string,
+     profileImg?: any,
      lastName: string,
      email: string,
      password: string,
-     createdAt?: string,
-     updatedAt?: string,
+     createdAt?: string | Date,
+     updatedAt?: string | Date,
      posts?: string[],
      likedPosts?: string[],
      repostedPosts?: string[],

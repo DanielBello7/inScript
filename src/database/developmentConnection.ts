@@ -169,7 +169,7 @@ class DevelopmentAPI implements DatabaseType {
 
 
      // comments
-     async CreateComment(data: NewComment): Promise<CommentType | false> {
+     async CreateComment(data: NewComment, type: 'comment' | 'post'): Promise<CommentType | false> {
           return {} as CommentType;
      }
 
@@ -178,6 +178,10 @@ class DevelopmentAPI implements DatabaseType {
      }
 
      async GetPostComments(id: string, page: number, limit: number): Promise<PaginatedResponse> {
+          return {} as PaginatedResponse
+     }
+
+     async GetCommentComments(id: string, page: number, limit: number): Promise<PaginatedResponse> {
           return {} as PaginatedResponse
      }
 

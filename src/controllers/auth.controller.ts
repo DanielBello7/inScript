@@ -5,9 +5,9 @@
 import { DatabaseType } from '../types/Database.type';
 import { RequestInterface } from '../types/UserType.type'; 
 import { Response } from 'express';
+import { generateToken } from '../middlewares/authenticate';
 import Log from "../config/bunyan.config";
 import bcrypt from 'bcrypt';
-import { generateToken } from '../middlewares/authenticate';
 
 
 
@@ -20,8 +20,6 @@ class AuthController {
      }
 
 
-     // login controller
-     // gets email and password from body
      LoginUser = async (req: RequestInterface, res: Response) => {
           const { email } = req.body;
 
@@ -35,23 +33,11 @@ class AuthController {
 
                if (!confirmation) return res.status(400).json({msg: 'invalid credentials'});
 
-               const { 
-                    password,
-                    uploads, 
-                    comments, 
-                    connections, 
-                    likedPosts, 
-                    posts, 
-                    repostedPosts,
-                    ...user
-               } = response[0];
+               const { password, ...user } = response[0];
 
                const token = generateToken(user);
 
-               const payload = {
-                    user,
-                    token
-               }
+               const payload = { user, token }
 
                return res.json({payload});
 
@@ -61,18 +47,25 @@ class AuthController {
           }
      }
 
-     // logout controller
-     // gets user id from req.user
+
      LogoutUser = (req: RequestInterface, res: Response) => {
           req.user = null;
           return res.json({msg: 'logged out'});
      }
 
-     // current user controller
-     // sends the current user
-     // gets user from req.user
-     CurrentUser = (req: RequestInterface, res: Response) => {
-          return res.json({payload: req.user});
+
+     CurrentUser = async (req: RequestInterface, res: Response) => {
+          try {
+               const response = await this.conn.GetUser(req.user.email);
+
+               const { password, ...user } = response[0];
+
+               return res.json({payload: user});
+          }
+          catch (error: any) {
+               Log.error(error);
+               return res.status(500).json({msg: error.message});
+          }
      }
 }
 

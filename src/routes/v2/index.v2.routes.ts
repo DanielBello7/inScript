@@ -13,7 +13,7 @@ import { DatabaseType } from '../../types/Database.type';
 
 // create router
 const router = express.Router();
-
+ 
 
 // main export
 export default (conn: DatabaseType) => {

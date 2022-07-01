@@ -17,8 +17,7 @@ class UserController {
           this.conn = connection;
      }
 
-     // new user controller
-     // expects UserType data
+
      CreateUser = async (req: RequestInterface, res: Response) => {
 
           const newUser = {
@@ -48,8 +47,7 @@ class UserController {
           }
      } 
 
-     // delete user controller
-     // gets id from req.user
+     
      DeleteUser = async (req: RequestInterface, res: Response) => {
           const { email } = req.user;
 
@@ -67,8 +65,7 @@ class UserController {
           }
      } 
 
-     // get single user controller
-     // uses :userID
+     
      GetUser = async (req: RequestInterface, res: Response) => {
 
           const user = req.params.userID;
@@ -89,9 +86,7 @@ class UserController {
           }
      }
 
-     // get all users controller
-     // uses query page
-     // uses query limit
+     
      GetUsers = async (req: RequestInterface, res: Response) => {
 
           const page = parseInt(req.query.page as string);
@@ -109,9 +104,7 @@ class UserController {
           }
      }
 
-     // modify user controller
-     // gets user id from req.user
-     // gets "modifyData"
+     
      ModifyUser = async (req: RequestInterface, res: Response) => {
 
           const { modifyData } = req.body;
@@ -129,20 +122,11 @@ class UserController {
                return res.status(500).json({msg: error.message});
           }
      }
-
-     // get all user connections
-     // gets user id from req.user
-     // uses :userID
+     
      GetUserConnections = (req: RequestInterface, res: Response) => {}
 
-     // add a new connection
-     // gets user id from req.user
-     // uses :ID
      AddConnection = (req: RequestInterface, res: Response) => {}
 
-     // removes a connection
-     // gets user id from req.user
-     // uses :ID
      RemoveConnection = (req: RequestInterface, res: Response) => {}
 
 }

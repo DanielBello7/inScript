@@ -61,7 +61,7 @@ class PostController {
 
           try {
 
-               const response = await this.conn.GetAllPost(page?page:1, limit?limit:1);
+               const response = await this.conn.GetAllPost(page?page:1, limit?limit:5);
 
                return res.json({payload: response});
 
