@@ -1,7 +1,7 @@
 
 
 
-// imports
+// imports 
 import { DatabaseType } from '../types/Database.type';
 import { Response } from 'express';
 import { RequestInterface } from '../types/UserType.type';
@@ -77,7 +77,7 @@ class ImageController {
      CloudinarySave = async (req: RequestInterface, res: Response) => {
 
           try {
-
+               
                const saveImg = await CloudinaryImageSave(req.body.image_file);
 
                const newImage: NewImage = {
@@ -90,7 +90,9 @@ class ImageController {
 
                const response = await this.conn.NewUpload(newImage);
 
-               return res.json({msg: response});
+               if (!response) return res.status(400).json({msg: 'error uploading image'});
+
+               return res.json({payload: response});
 
           } catch (error: any) {
                Log.error(error);

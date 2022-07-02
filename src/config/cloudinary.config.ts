@@ -6,7 +6,6 @@ import Cloudinary from 'cloudinary';
 import envConfig from './env.config';
 
 
-
 envConfig();
 
 Cloudinary.v2.config({ 

@@ -56,5 +56,5 @@ export type NewUser = {
 export type ModifyDataType = {
      firstName?: string,
      lastName?: string,
-     password?: string
+     profileImg?: any,
 }

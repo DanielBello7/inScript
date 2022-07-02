@@ -46,6 +46,8 @@ export type DatabaseType = {
      GetPost: (id: string) => Promise<PostType[]>,
      GetAllPost: (page: number, limit: number) => Promise<PaginatedResponse>,
      GetUserPosts: (email: string, page: number, limit: number) => Promise<PaginatedResponse>,
+     GetUserLikedPosts: (email: string, page: number, limit: number) => Promise<PaginatedResponse>,
+     GetUserRepostedPosts: (email: string, page: number, limit: number) => Promise<PaginatedResponse>,
 
      DeletePost: (id: string, email: string) => Promise<boolean>,
      LikePost: (id: string, email: string) => Promise<boolean>,

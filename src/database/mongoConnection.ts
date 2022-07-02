@@ -33,7 +33,6 @@ class MongoConnection implements DatabaseType {
           return [response[0]._doc];
      }
 
-
      async GetUsers(page: number, limit: number): Promise<PaginatedResponse> {
           const startIndex = (page - 1) * limit;
           const endIndex = page * limit;
@@ -57,7 +56,6 @@ class MongoConnection implements DatabaseType {
           return payload
      }
 
-
      async CreateUser(user: NewUser): Promise<UserType | false> {
 
           const newUser = new UserModel({
@@ -74,14 +72,24 @@ class MongoConnection implements DatabaseType {
           return response
      }
 
-     // not created
      async ModifyUser(email: string, data: ModifyDataType): Promise<boolean> {
-          return false;
+          const response = await UserModel.updateOne(
+               {email: email}, 
+               {$set: {
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    profileImg: data.profileImg
+               }}
+          );
+
+          if (response.modifiedCount <= 0) return false;
+          return true;
      }
 
-     // not created
      async DeleteUser(email: string): Promise<boolean> {
-          return false;
+          const response = await UserModel.deleteOne({email: email});
+          if (response.deletedCount <= 0) return false;
+          return true;
      }
 
 
@@ -151,15 +159,95 @@ class MongoConnection implements DatabaseType {
 
           const total = count[0].posts.length;
 
-          const response = await UserModel.findOne({email: email}).populate({
-               path: 'posts'
-          }).limit(limit).skip(startIndex).exec();
+          const response = await UserModel.findOne({email: email})
+          .select('posts')
+          .populate([
+               {
+                    path: 'posts',
+                    populate: {
+                         path: 'createdBy',
+                         select: ['firstName', 'lastName', 'email']         
+                    }
+               }
+          ]);
+
+          const selectedPoints = response.posts.slice(startIndex, endIndex);
 
           const payload: PaginatedResponse = {
                currentPage: page,
                hasMore: endIndex < total,
                limit: limit,
-               results: response,
+               results: selectedPoints,
+               totalFound: total
+          }
+
+          return payload
+     }
+
+     async GetUserLikedPosts(email: string, page: number, limit: number): Promise<PaginatedResponse> {
+
+          const startIndex = (page - 1) * limit;
+
+          const endIndex = page * limit;
+
+          const count = await UserModel.find({email: email})
+
+          const total = count[0].likedPosts.length;
+
+          const response = await UserModel.findOne({email: email})
+          .select('likedPosts')
+          .populate([
+               {
+                    path: 'likedPosts',
+                    populate: {
+                         path: 'createdBy',
+                         select: ['firstName', 'lastName', 'email']         
+                    }
+               }
+          ]);
+
+          const selectedPoints = response.likedPosts.slice(startIndex, endIndex);
+
+          const payload: PaginatedResponse = {
+               currentPage: page,
+               hasMore: endIndex < total,
+               limit: limit,
+               results: selectedPoints,
+               totalFound: total
+          }
+
+          return payload
+     }
+
+     async GetUserRepostedPosts(email: string, page: number, limit: number): Promise<PaginatedResponse> {
+
+          const startIndex = (page - 1) * limit;
+
+          const endIndex = page * limit;
+
+          const count = await UserModel.find({email: email})
+
+          const total = count[0].repostedPosts.length;
+
+          const response = await UserModel.findOne({email: email})
+          .select('repostedPosts')
+          .populate([
+               {
+                    path: 'repostedPosts',
+                    populate: {
+                         path: 'createdBy',
+                         select: ['firstName', 'lastName', 'email']         
+                    }
+               }
+          ]);
+
+          const selectedPoints = response.repostedPosts.slice(startIndex, endIndex);
+
+          const payload: PaginatedResponse = {
+               currentPage: page,
+               hasMore: endIndex < total,
+               limit: limit,
+               results: selectedPoints,
                totalFound: total
           }
 
@@ -450,9 +538,10 @@ class MongoConnection implements DatabaseType {
           return getImage;
      }
 
-     // not done
      async DeleteImage(imgId: string, email: string): Promise<boolean> {
-          return false;
+          const response = await ImageModel.deleteOne({_id: imgId});
+          if (response.deletedCount <= 0) return false;
+          return true;
      }
 }
 

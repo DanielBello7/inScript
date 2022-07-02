@@ -39,6 +39,12 @@ export default (conn: DatabaseType) => {
      // route for all posts of a user --[GET]
      router.get('/user/:userID', __verifyUser, post.GetUserPosts);
 
+     // route for all liked posts of a user --[GET]
+     router.get('/user/liked/:userID', __verifyUser, post.GetUserLikedPosts);
+
+     // route for all reposted posts of a user --[GET]
+     router.get('/user/reposted/:userID', __verifyUser, post.GetUserRepostedPosts);
+
      // route for liking posts --[PUT]
      router.put('/like/:postID', __verifyUser, post.LikePost);
 

@@ -91,10 +91,6 @@ class DevelopmentAPI implements DatabaseType {
 
                if (data.lastName) user.lastName = data.lastName;
 
-               if (data.password) {
-                    user.password = bcrypt.hashSync(data.password, 10);
-               }
-
                return user;
           });
 
@@ -139,6 +135,24 @@ class DevelopmentAPI implements DatabaseType {
      }
 
      async GetUserPosts(email: string, page: number, limit: number): Promise<PaginatedResponse> {
+
+          const userPosts = this.users.find(user => user.email === email);
+
+          const results = await LocalPaginate(userPosts?.posts, page, limit);
+          
+          return results;
+     }
+
+     async GetUserLikedPosts(email: string, page: number, limit: number): Promise<PaginatedResponse> {
+
+          const userPosts = this.users.find(user => user.email === email);
+
+          const results = await LocalPaginate(userPosts?.posts, page, limit);
+          
+          return results;
+     }
+
+     async GetUserRepostedPosts(email: string, page: number, limit: number): Promise<PaginatedResponse> {
 
           const userPosts = this.users.find(user => user.email === email);
 

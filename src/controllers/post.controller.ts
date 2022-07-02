@@ -35,7 +35,7 @@ class PostController {
           } catch (error: any) {
                Log.error(error);
                return res.status(500).json({msg: error.message});
-          }
+          } 
      }
 
      GetSinglePost = async (req: RequestInterface, res: Response) => {
@@ -81,7 +81,47 @@ class PostController {
 
           try {
 
-               const response = await this.conn.GetUserPosts(user, page?page:1, limit?limit:1)
+               const response = await this.conn.GetUserPosts(user, page?page:1, limit?limit:5)
+
+               return res.json({payload: response});
+
+          } catch (error: any) {
+               Log.error(error);
+               return res.status(500).json({msg: error.message});
+          }
+     }
+
+     GetUserLikedPosts = async (req: RequestInterface, res: Response) => {
+
+          const user = req.params.userID;
+
+          const page = parseInt(req.query.page as string);
+
+          const limit = parseInt(req.query.limit as string);
+
+          try {
+
+               const response = await this.conn.GetUserLikedPosts(user, page?page:1, limit?limit:5)
+
+               return res.json({payload: response});
+
+          } catch (error: any) {
+               Log.error(error);
+               return res.status(500).json({msg: error.message});
+          }
+     }
+
+     GetUserRepostedPosts = async (req: RequestInterface, res: Response) => {
+
+          const user = req.params.userID;
+
+          const page = parseInt(req.query.page as string);
+
+          const limit = parseInt(req.query.limit as string);
+
+          try {
+
+               const response = await this.conn.GetUserRepostedPosts(user, page?page:1, limit?limit:5)
 
                return res.json({payload: response});
 

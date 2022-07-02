@@ -8,4 +8,4 @@ async function CloudinaryImageSave(file: string) {
      return response;
 }
 
-export default CloudinaryImageSave;
+export default CloudinaryImageSave; 

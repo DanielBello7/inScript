@@ -3,7 +3,7 @@
 
 // imports
 import { DatabaseType } from '../types/Database.type';
-import { RequestInterface } from '../types/UserType.type';
+import { ModifyDataType, RequestInterface } from '../types/UserType.type';
 import { Response } from 'express';
 import Log from "../config/bunyan.config";
 
@@ -46,7 +46,6 @@ class UserController {
                return res.status(500).json({msg: error.message});
           }
      } 
-
      
      DeleteUser = async (req: RequestInterface, res: Response) => {
           const { email } = req.user;
@@ -64,7 +63,6 @@ class UserController {
                return res.status(500).json({msg: error.message});
           }
      } 
-
      
      GetUser = async (req: RequestInterface, res: Response) => {
 
@@ -86,7 +84,6 @@ class UserController {
           }
      }
 
-     
      GetUsers = async (req: RequestInterface, res: Response) => {
 
           const page = parseInt(req.query.page as string);
@@ -103,18 +100,19 @@ class UserController {
                return res.status(500).json({msg: error.message});
           }
      }
-
      
      ModifyUser = async (req: RequestInterface, res: Response) => {
-
-          const { modifyData } = req.body;
+          const { img, firstName, lastName } = req.body.modifyData;
 
           try {
+               const mainSaveData: ModifyDataType = {
+                    firstName: firstName,
+                    lastName: lastName,
+                    profileImg: img
+               }
 
-               const response = await this.conn.ModifyUser(req.user.email, modifyData);
-
+               const response = await this.conn.ModifyUser(req.user.email, mainSaveData);
                if (!response) return res.status(400).json({msg: 'error updating user'});
-
                return res.json({msg: 'user updated'});
 
           } catch (error: any) {
