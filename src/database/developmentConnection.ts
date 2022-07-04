@@ -66,6 +66,12 @@ class DevelopmentAPI implements DatabaseType {
           return selectedUser;
      }
 
+     // function to get a random user
+     async GetRandomUser(email: string): Promise<UserType> {
+          // const selectedUser = this.users.filter(user => user.email === id);
+          return {} as UserType;
+     }
+
      // function to create a new user and add to the database
      async CreateUser(user: NewUser): Promise<UserType | false> {
           let _id = Math.random().toString();
@@ -106,6 +112,18 @@ class DevelopmentAPI implements DatabaseType {
           return true
      }
 
+     async AddConnection(email: string, connection: string): Promise<boolean> {
+          return true
+     }
+
+     async GetConnections(email: string): Promise<any[]> {
+          return []
+     }
+
+     async RemoveConnection(email: string, connection: string): Promise<boolean> {
+          return true
+     }
+
 
 
      // Posts
@@ -127,6 +145,11 @@ class DevelopmentAPI implements DatabaseType {
      async GetPost(id: string): Promise<PostType[]> {
           const result = this.posts.filter(post => post._id === id);
           return result;
+     }
+
+     async GetARandomPost(): Promise<PostType> {
+          // const result = this.posts.filter(post => post._id === id);
+          return {} as PostType;
      }
 
      async GetAllPost(page: number, limit: number): Promise<PaginatedResponse> {

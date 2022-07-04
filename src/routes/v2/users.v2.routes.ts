@@ -30,11 +30,13 @@ export default (conn: DatabaseType) => {
      ValidateRequest, user.CreateUser);
 
      // route to get all users --[GET]
-     // router.get('/', __verifyUser, user.GetUsers);
-     router.get('/', user.GetUsers);
+     router.get('/', __verifyUser, user.GetUsers);
 
      // route to get a singleUser --[GET]
      router.get('/:userID', __verifyUser, user.GetUser);
+
+     // route to get user connections --[GET]
+     router.get('/connections/preference', __verifyUser, user.GetRandomConnection);
 
      // route to get user connections --[GET]
      router.get('/connections/:userID', __verifyUser, user.GetUserConnections);
@@ -48,7 +50,9 @@ export default (conn: DatabaseType) => {
      // route to modify user --[PATCH]
      router.patch('/modify', 
      [
-          check('modifyData').isObject().escape().withMessage('required')
+          check('firstName').trim().escape(),
+          check('lastName').trim().escape(),
+          check('img').trim().isString(),
      ], 
      ValidateRequest, 
      __verifyUser, 

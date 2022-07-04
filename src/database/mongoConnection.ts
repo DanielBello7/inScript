@@ -33,6 +33,27 @@ class MongoConnection implements DatabaseType {
           return [response[0]._doc];
      }
 
+     async GetRandomUser(email: string): Promise<UserType> {
+
+          const response = await UserModel.aggregate([
+               {$match: {email: {$ne: email}}},
+               {$sample: {size: 1}}
+          ]);
+
+          return response[0];
+
+
+          // const total = await UserModel.countDocuments();
+          
+          // const random = Math.floor(Math.random() * total);
+
+          // const response = await UserModel.findOne({email: {$ne: email}}).skip(random);
+
+          // console.log(response);
+
+          // return response._doc;
+     }
+
      async GetUsers(page: number, limit: number): Promise<PaginatedResponse> {
           const startIndex = (page - 1) * limit;
           const endIndex = page * limit;
@@ -92,6 +113,18 @@ class MongoConnection implements DatabaseType {
           return true;
      }
 
+     async GetConnections(email: string): Promise<any[]> {
+          return []
+     }
+
+     async AddConnection(email: string, connection: string): Promise<boolean> {
+          return true;
+     }
+
+     async RemoveConnection(email: string, connection: string): Promise<boolean> {
+          return true;
+     }
+
 
      // Posts
      async NewPost(data: NewPostType): Promise<PostType | false> {
@@ -122,7 +155,23 @@ class MongoConnection implements DatabaseType {
 
      async GetPost(id: string): Promise<PostType[]> {
           
-          const response = await PostModel.find({_id: id});
+          const response = await PostModel.findOne({_id: id})
+          .populate('createdBy', ['firstName', 'lastName', 'email']);
+          return [response];
+     }
+
+     async GetARandomPost(): Promise<PostType> {
+          // const response = await PostModel.aggregate([
+          //      {$sample: {size: 1}}
+          // ])
+
+
+          const total = await PostModel.countDocuments();
+          
+          const random = Math.floor(Math.random() * total);
+
+          const response = await PostModel.findOne()
+          .populate('createdBy', ['firstName', 'lastName', 'email']).skip(random);
 
           return response;
      }
@@ -254,11 +303,6 @@ class MongoConnection implements DatabaseType {
           return payload
      }
 
-     // not created
-     async DeletePost(id: string, email: string): Promise<boolean> {
-          return false;
-     }
-
      async LikePost(id: string, user: string): Promise<boolean> {
           
           const updateLikes = await PostModel.updateOne(
@@ -361,6 +405,11 @@ class MongoConnection implements DatabaseType {
           if (updateUser.modifiedCount < 1) return false;
 
           return true;
+     }
+
+     // not created
+     async DeletePost(id: string, email: string): Promise<boolean> {
+          return false;
      }
 
 
@@ -517,7 +566,7 @@ class MongoConnection implements DatabaseType {
 
           const newImage = new ImageModel({...data});
 
-          const response = newImage.save();
+          const response = await newImage.save();
 
           if (!response) return false;
 

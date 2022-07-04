@@ -21,7 +21,9 @@ class PostController {
                postType: req.body.postType,
                text: req.body.text,
                likes: 0,
-               reposts: 0
+               media: req.body.media,
+               reposts: 0,
+               mediaType: 'image'
           }
 
           try {
@@ -221,6 +223,18 @@ class PostController {
           }
      }
 
+     GetRandomPost = async (req: RequestInterface, res: Response) => {
+          try {
+
+               const response = await this.conn.GetARandomPost();
+
+               return res.json({payload: response});
+
+          } catch (error: any) {
+               Log.error(error);
+               return res.status(500).json({msg: error.message});
+          }
+     }
 }
 
 

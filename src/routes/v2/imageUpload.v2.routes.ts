@@ -24,7 +24,7 @@ export default (conn: DatabaseType) => {
      // route for uploading images using cloudinary --[POST]
      router.post('/cloudinary', 
      [
-          check('image_file').isString().escape(),
+          check('image_file').isString(),
           check('name').isString().escape(),
           check('size').isNumeric().escape(),
           check('extension').isString().escape()

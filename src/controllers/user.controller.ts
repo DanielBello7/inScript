@@ -102,18 +102,44 @@ class UserController {
      }
      
      ModifyUser = async (req: RequestInterface, res: Response) => {
-          const { img, firstName, lastName } = req.body.modifyData;
+          const { img, firstName, lastName } = req.body;
 
           try {
                const mainSaveData: ModifyDataType = {
                     firstName: firstName,
                     lastName: lastName,
-                    profileImg: img
+                    profileImg: img ? img : req.user.profileImg
                }
 
                const response = await this.conn.ModifyUser(req.user.email, mainSaveData);
                if (!response) return res.status(400).json({msg: 'error updating user'});
                return res.json({msg: 'user updated'});
+
+          } catch (error: any) {
+               Log.info(error);
+               return res.status(500).json({msg: error.message});
+          }
+     }
+
+     GetRandomConnection = async (req: RequestInterface, res: Response) => {
+
+          try {
+
+               const response = await this.conn.GetRandomUser(req.user.email);
+
+               const { 
+                    comments, 
+                    createdAt,
+                    likedPosts,
+                    repostedPosts, 
+                    uploads, 
+                    updatedAt,
+                    posts,
+                    password, 
+                    ...responseUser 
+               } = response;
+
+               return res.json({payload: responseUser});
 
           } catch (error: any) {
                Log.info(error);

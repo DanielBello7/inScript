@@ -22,6 +22,10 @@ const UserSchema = new mongoose.Schema({
           trim: true,
           lowercase: true
      },
+     profileImg: {
+          type: String,
+          required: false,
+     },
      email: {
           type: String,
           required: true,

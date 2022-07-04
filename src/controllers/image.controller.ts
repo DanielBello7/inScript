@@ -77,11 +77,10 @@ class ImageController {
      CloudinarySave = async (req: RequestInterface, res: Response) => {
 
           try {
-               
                const saveImg = await CloudinaryImageSave(req.body.image_file);
 
                const newImage: NewImage = {
-                    createdBy: req.user.email,
+                    createdBy: req.user._id,
                     data: saveImg.url,
                     extension: req.body.extension,
                     name: req.body.name,

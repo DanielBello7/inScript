@@ -22,7 +22,8 @@ export default (conn: DatabaseType) => {
      // this creats a new post ---[POST]
      router.post('/', 
      [ 
-          check('text').trim().isString().escape(),
+          check('text').trim().isString(),
+          check('media').isString().trim(),
           check('postType').isString().trim().escape(),
           check('createdBy').isString().trim().escape()
      ], 
@@ -32,6 +33,9 @@ export default (conn: DatabaseType) => {
 
      // route for all posts --[GET]
      router.get('/', __verifyUser, post.GetAllPosts);
+
+     // route for getting a random post
+     router.get('/preference', __verifyUser, post.GetRandomPost);
 
      // route for getting single post --[GET]
      router.get('/:postID', __verifyUser, post.GetSinglePost);

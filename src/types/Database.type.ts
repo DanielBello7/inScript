@@ -2,26 +2,10 @@
 
 
 // imports
-import { 
-     UserType, 
-     NewUser, 
-     ModifyDataType 
-} from "./UserType.type";
-
-import {
-     NewPostType, 
-     PostType,
-} from './PostType.type';
-
-import {
-     NewComment,
-     CommentType
-} from './CommentType.type';
-
-import {
-     ImageType,
-     NewImage
-} from './ImageType.type'
+import { UserType, NewUser, ModifyDataType } from "./UserType.type";
+import { NewPostType, PostType } from './PostType.type';
+import { NewComment, CommentType } from './CommentType.type';
+import { ImageType, NewImage } from './ImageType.type'
 
 
 // paginator response type
@@ -37,13 +21,18 @@ export type PaginatedResponse = {
 // main database type
 export type DatabaseType = {
      GetUser: (email: string) => Promise<UserType[]>,
+     GetRandomUser: (email: string) => Promise<UserType>,
      GetUsers: (page: number, limit: number) => Promise<PaginatedResponse>,
      CreateUser: (user: NewUser) => Promise<UserType | false>,
      DeleteUser: (email: string) => Promise<boolean>,
      ModifyUser: (email: string, details: ModifyDataType) => Promise<boolean>,
+     GetConnections: (email: string) => Promise<any[]>,
+     AddConnection: (email: string, connection: string) => Promise<boolean>,
+     RemoveConnection: (email: string, connection: string) => Promise<boolean>
 
      NewPost: (data: NewPostType) => Promise<PostType | false>,
      GetPost: (id: string) => Promise<PostType[]>,
+     GetARandomPost: () => Promise<PostType>,
      GetAllPost: (page: number, limit: number) => Promise<PaginatedResponse>,
      GetUserPosts: (email: string, page: number, limit: number) => Promise<PaginatedResponse>,
      GetUserLikedPosts: (email: string, page: number, limit: number) => Promise<PaginatedResponse>,
