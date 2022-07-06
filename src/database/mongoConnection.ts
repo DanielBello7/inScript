@@ -64,7 +64,7 @@ class MongoConnection implements DatabaseType {
           const response = await UserModel.find().limit(limit).skip(startIndex).exec();
 
           const resUsers = response.map(result => {
-               const { password, comments, uploads, ...newResUser } = result;
+               const { password, comments, uploads, ...newResUser } = result._doc;
                return newResUser;
           });
 
