@@ -5,9 +5,9 @@
 import CommentController from '../../controllers/comment.controller';
 import { __verifyUser } from '../../middlewares/authenticate';
 import { ValidateRequest } from '../../middlewares/ErrorHandlers';
+import { DatabaseType } from '../../types/Database.type';
 import { check } from 'express-validator';
 import express from 'express';
-import { DatabaseType } from '../../types/Database.type';
 
 // create router
 const router = express.Router();
@@ -37,24 +37,6 @@ export default (conn: DatabaseType) => {
 
      // route for all comments of a particular comment --[GET]
      router.get('/comment/:commentID', __verifyUser, comment.GetAllCommentsForComment);
-
-     // route for all single user comments ---[GET]
-     router.get('/user/:userID', __verifyUser, comment.GetUserComments);
-
-     // route to like a comment --[PUT]
-     router.put('/like/:commentID', __verifyUser, comment.LikeComment);
-
-     // route to repost a comment --[PUT]
-     router.put('/repost/:commentID', __verifyUser, comment.RepostComment);
-
-     // route to unlike a comment --[PATCH]
-     router.patch('/unlike/:commentID', __verifyUser, comment.UnlikeComment);
-
-     // route to un repost a comment --[PATCH]
-     router.patch('/unrepost/:commentID', __verifyUser, comment.UnRepostComment);
-
-     // route to delete a comment --[DELETE]
-     router.delete('/:commentID', __verifyUser, comment.DeleteComment);
 
      // default return
      return router;
