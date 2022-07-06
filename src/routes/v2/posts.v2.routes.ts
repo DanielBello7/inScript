@@ -61,9 +61,6 @@ export default (conn: DatabaseType) => {
      // route for un-reposting --[PUT]
      router.put('/unrepost/:postID', __verifyUser, post.UnRepostPost);
 
-     // route for deleting post
-     router.delete('/:postID', __verifyUser, post.DeletePost);
-
      // default return
      return router;
 }

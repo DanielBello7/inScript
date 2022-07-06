@@ -1,0 +1,2 @@
+{"name":"dev","hostname":"DanielBello.local","pid":24740,"level":30,"msg":"server active on port:2022","time":"2022-07-06T19:15:13.755Z","src":{"file":"/Users/Danielbello/Desktop/NODEjs/14-inscriptCon/server/src/bin/server.ts","line":28,"func":"onListening"},"v":0}
+{"name":"dev","hostname":"DanielBello.local","pid":24740,"level":30,"msg":"connected to database","time":"2022-07-06T19:15:13.844Z","src":{"file":"/Users/Danielbello/Desktop/NODEjs/14-inscriptCon/server/src/database/mongoConnection.ts","line":36},"v":0}

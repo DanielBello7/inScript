@@ -133,24 +133,6 @@ class PostController {
           }
      }
 
-     DeletePost = async (req: RequestInterface, res: Response) => {
-
-          const postID = req.params.postID;
-
-          try {
-
-               const response = await this.conn.DeletePost(postID, req.user._id);
-
-               if (!response) return res.status(400).json({msg: 'error deleting post'});
-
-               return res.json({msg: 'post deleted', success: 1});
-               
-          } catch (error: any) {
-               Log.error(error);
-               return res.status(500).json({msg: error.message});
-          }
-     }
-
      LikePost = async (req: RequestInterface, res: Response) => {
 
           const postID = req.params.postID;

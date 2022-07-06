@@ -131,9 +131,9 @@ class DevelopmentAPI implements DatabaseType {
                createdAt: new Date()
           }
 
-          this.posts.push(newPost);
+          // this.posts.push(newPost);
 
-          return newPost;
+          return {} as PostType;
      }
 
      async GetPost(id: string): Promise<PostType[]> {
@@ -238,7 +238,7 @@ class DevelopmentAPI implements DatabaseType {
 
      // Notifications
      async GetNotifications(email: string): Promise<NotificationsType[]> {
-          return {} as NotificationsType;
+          return []
      }
 
      async ChangeNotificationStatus(email: string, id: string): Promise<boolean> {
