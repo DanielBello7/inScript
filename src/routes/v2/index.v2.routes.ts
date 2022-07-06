@@ -8,6 +8,7 @@ import users from './users.v2.routes';
 import posts from './posts.v2.routes';
 import auth from './auth.v2.routes';
 import express from "express";
+import notifications from './notifications.v2.routes';
 import { DatabaseType } from '../../types/Database.type';
 
 
@@ -32,6 +33,9 @@ export default (conn: DatabaseType) => {
 
      // router for comments
      router.use('/comments', comments(conn));
+
+     // router for notifications
+     router.use('/notifications', notifications(conn));
 
      // default return
      return router;

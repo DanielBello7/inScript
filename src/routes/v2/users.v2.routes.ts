@@ -4,10 +4,10 @@
 // imports
 import express from 'express';
 import { ValidateRequest } from '../../middlewares/ErrorHandlers';
-import { check } from 'express-validator';
-import UserController from '../../controllers/user.controller';
 import { __verifyUser } from '../../middlewares/authenticate';
 import { DatabaseType } from '../../types/Database.type';
+import { check } from 'express-validator';
+import UserController from '../../controllers/user.controller';
 
 // create the router
 const router = express.Router();

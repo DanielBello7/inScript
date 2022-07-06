@@ -3,19 +3,16 @@
 
 import { DatabaseType, PaginatedResponse } from "../types/Database.type";
 import { LocalPaginate } from '../middlewares/Paginate';
-import bcrypt from 'bcrypt';
-import { 
-     UserType, 
-     NewUser, 
-     ModifyDataType 
-} from "../types/UserType.type";
+import { UserType, NewUser, ModifyDataType } from "../types/UserType.type";
 import { NewPostType, PostType } from "../types/PostType.type";
 import { NewComment, CommentType } from "../types/CommentType.type";
 import { NewImage, ImageType } from "../types/ImageType.type";
+import { NotificationsType } from "../types/NotificationsType.type";
+// import bcrypt from 'bcrypt';
 
 
 
-// create the implementation of the class
+
 class DevelopmentAPI implements DatabaseType {
 
      public users: UserType[];
@@ -54,25 +51,22 @@ class DevelopmentAPI implements DatabaseType {
      }
 
 
-     // function to get users
+     // Users
      async GetUsers(page: number, limit: number): Promise<any> {
           const response = await LocalPaginate(this.users, page, limit);
           return response;
      }
 
-     // function to get a particular user
      async GetUser(id: string): Promise<UserType[]> {
           const selectedUser = this.users.filter(user => user.email === id);
           return selectedUser;
      }
 
-     // function to get a random user
      async GetRandomUser(email: string): Promise<UserType> {
           // const selectedUser = this.users.filter(user => user.email === id);
           return {} as UserType;
      }
 
-     // function to create a new user and add to the database
      async CreateUser(user: NewUser): Promise<UserType | false> {
           let _id = Math.random().toString();
 
@@ -83,7 +77,6 @@ class DevelopmentAPI implements DatabaseType {
           return newUser;
      }
 
-     // function to modify a user
      async ModifyUser(email: string, data: ModifyDataType): Promise<boolean> {
 
           let changed = false;
@@ -107,7 +100,6 @@ class DevelopmentAPI implements DatabaseType {
           return true;
      }
 
-     // function to remove a user from the list
      async DeleteUser(email: string): Promise<boolean> {
           return true
      }
@@ -123,6 +115,8 @@ class DevelopmentAPI implements DatabaseType {
      async RemoveConnection(email: string, connection: string): Promise<boolean> {
           return true
      }
+
+
 
 
 
@@ -184,10 +178,6 @@ class DevelopmentAPI implements DatabaseType {
           return results;
      }
 
-     async DeletePost (id: string, email: string): Promise<boolean> {
-          return false;
-     }
-
      async LikePost(id: string, email: string): Promise<boolean> {
           return false
      }
@@ -205,7 +195,10 @@ class DevelopmentAPI implements DatabaseType {
      }
 
 
-     // comments
+
+
+
+     // Comments
      async CreateComment(data: NewComment, type: 'comment' | 'post'): Promise<CommentType | false> {
           return {} as CommentType;
      }
@@ -222,32 +215,11 @@ class DevelopmentAPI implements DatabaseType {
           return {} as PaginatedResponse
      }
 
-     async GetUserComments(email: string, page: number, limit: number): Promise<PaginatedResponse> {
-          return {} as PaginatedResponse
-     }
-
-     async LikeComment(commentId: string, email: string): Promise<boolean> {
-          return false;
-     }
-
-     async UnLikeComment(commentId: string, email: string): Promise<boolean> {
-          return false;
-     }
-
-     async RepostComment(commentId: string, email: string): Promise<boolean> {
-          return false;
-     }
-
-     async UnRepostComment(commentId: string, email: string): Promise<boolean> {
-          return false;
-     }
-
-     async DeleteComment(commentId: string, email: string): Promise<boolean> {
-          return false;
-     }
 
 
-     // Image / Uploads
+
+
+     // Uploads
      async NewUpload(data: NewImage): Promise<ImageType | false> {
           return {} as ImageType;
      }
@@ -259,8 +231,30 @@ class DevelopmentAPI implements DatabaseType {
      async DeleteImage(imgId: string, email: string): Promise<boolean> {
           return false;
      }
+
+
+
+
+
+     // Notifications
+     async GetNotifications(email: string): Promise<NotificationsType> {
+          return {} as NotificationsType;
+     }
+
+     async ChangeNotificationStatus(email: string, id: string): Promise<boolean> {
+          return true;
+     }
+
+     async DeleteNotification(email: string, id: string): Promise<boolean> {
+          return true;
+     }
+
+     async ClearAllNotifications(email: string): Promise<boolean> {
+          return true;
+     }
 }
 
 
-// export the class
+
+
 export default DevelopmentAPI;

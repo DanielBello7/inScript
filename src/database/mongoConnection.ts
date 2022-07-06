@@ -1,7 +1,6 @@
 
 
 
-// imports
 import Log from '../config/bunyan.config';
 import mongoose from 'mongoose';
 import { DatabaseType, PaginatedResponse } from '../types/Database.type';
@@ -9,10 +8,14 @@ import { UserType, NewUser, ModifyDataType } from '../types/UserType.type';
 import { CommentType, NewComment } from '../types/CommentType.type';
 import { NewPostType, PostType } from '../types/PostType.type';
 import { ImageType, NewImage } from '../types/ImageType.type';
+import { NotificationsType } from '../types/NotificationsType.type';
 import CommentsModel from '../models/Comments.models';
 import ImageModel from '../models/Image.models';
 import PostModel from '../models/Post.models';
 import UserModel from '../models/User.models';
+import NotificationModel from '../models/NotificationModel';
+import NotificationService from '../services/Notifications.service';
+
 
 
 class MongoConnection implements DatabaseType {
@@ -22,8 +25,7 @@ class MongoConnection implements DatabaseType {
           });
      } 
 
-
-     
+     // Users
      async GetUser(email: string): Promise<UserType[]> {
 
           const response = await UserModel.find({email: email});
@@ -140,6 +142,9 @@ class MongoConnection implements DatabaseType {
           if (updateUserConnections.modifiedCount < 1) return false;
           return true;
      }
+
+
+
 
 
      // Posts
@@ -423,10 +428,8 @@ class MongoConnection implements DatabaseType {
           return true;
      }
 
-     // not created
-     async DeletePost(id: string, email: string): Promise<boolean> {
-          return false;
-     }
+
+
 
 
      // Comments
@@ -465,7 +468,6 @@ class MongoConnection implements DatabaseType {
           return response;
      }
 
-
      async GetComment(id: string): Promise<CommentType[]> {
 
           const response = await CommentsModel.findOne({_id: id}).populate(
@@ -474,7 +476,6 @@ class MongoConnection implements DatabaseType {
 
           return [response];
      }
-
      
      async GetPostComments(id: string, page: number, limit: number): Promise<PaginatedResponse> {
 
@@ -546,35 +547,8 @@ class MongoConnection implements DatabaseType {
           return payload;
      }
 
-     // not done
-     async GetUserComments(email: string, page: number, limit: number): Promise<PaginatedResponse> {
-          return {} as PaginatedResponse
-     }
 
-     // not done
-     async LikeComment(commentId: string, email: string): Promise<boolean> {
-          return false;
-     }
 
-     // not done
-     async UnLikeComment(commentId: string, email: string): Promise<boolean> {
-          return false;
-     }
-
-     // not done
-     async RepostComment(commentId: string, email: string): Promise<boolean> {
-          return false;
-     }
-
-     // not done
-     async UnRepostComment(commentId: string, email: string): Promise<boolean> {
-          return false;
-     }
-
-     // not done
-     async DeleteComment(commentId: string, email: string): Promise<boolean> {
-          return false;
-     }
 
 
      // Image / Uploads
@@ -606,6 +580,27 @@ class MongoConnection implements DatabaseType {
      async DeleteImage(imgId: string, email: string): Promise<boolean> {
           const response = await ImageModel.deleteOne({_id: imgId});
           if (response.deletedCount <= 0) return false;
+          return true;
+     }
+
+
+
+
+
+     // Notifications
+     async GetNotifications(email: string): Promise<NotificationsType> {
+          return {} as NotificationsType;
+     }
+
+     async ChangeNotificationStatus(id: string): Promise<boolean> {
+          return true;
+     }
+
+     async DeleteNotification(id: string): Promise<boolean> {
+          return true;
+     }
+
+     async ClearAllNotifications(): Promise<boolean> {
           return true;
      }
 }

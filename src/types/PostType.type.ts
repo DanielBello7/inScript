@@ -5,7 +5,11 @@
 export type PostType = {
      _id: string,
      text?: string,
-     createdBy: string,
+     createdBy: {
+          email: string,
+          firstName: string,
+          lastName: string
+     },
      likes: number,
      likedBy: string[],
      reposts: number,
