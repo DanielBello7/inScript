@@ -147,11 +147,62 @@ class UserController {
           }
      }
      
-     GetUserConnections = (req: RequestInterface, res: Response) => {}
+     GetUserConnections = async (req: RequestInterface, res: Response) => {
+          const user = req.params.userID;
 
-     AddConnection = (req: RequestInterface, res: Response) => {}
+          try {
 
-     RemoveConnection = (req: RequestInterface, res: Response) => {}
+               const response = await this.conn.GetConnections(user);
+
+               return res.json({payload: response});
+          }
+          catch (error: any) {
+               Log.error(error);
+               return res.status(500).json({msg: error.message});
+          }
+     }
+
+     AddConnection = async (req: RequestInterface, res: Response) => {
+
+          const connectionID = req.params.ID;
+
+          const email = req.user.email; 
+
+          try {
+
+               const response = await this.conn.AddConnection(email, connectionID);
+
+               if (!response) return res.status(400).json({msg: 'error adding connection'});
+
+               return res.json({payload: 'Connection added'});
+
+          }
+          catch (error: any) {
+               Log.error(error);
+               return res.status(500).json({msg: error.message});
+          }
+     }
+
+     RemoveConnection = async (req: RequestInterface, res: Response) => {
+
+          const connectionID = req.params.ID;
+
+          const email = req.user.email;
+
+          try {
+
+               const response = await this.conn.RemoveConnection(email, connectionID);
+
+               if (!response) return res.status(400).json({msg: 'error removing connection'});
+
+               return res.json({payload: 'connection added'});
+
+          }
+          catch (error: any) {
+               Log.error(error);
+               return res.status(500).json({msg: error.message});
+          }
+     }
 
 }
 

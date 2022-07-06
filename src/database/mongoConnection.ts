@@ -114,14 +114,30 @@ class MongoConnection implements DatabaseType {
      }
 
      async GetConnections(email: string): Promise<any[]> {
-          return []
+          const response = await UserModel.findOne({email: email})
+          .select('connections')
+          .populate('connections', ['_id', 'firstName', 'lastName', 'profileImg', 'email', 'connections']);
+          return response.connections;
      }
 
      async AddConnection(email: string, connection: string): Promise<boolean> {
+
+          const updateUserConnections = await UserModel.updateOne(
+               { email: email },
+               { $push: {connections: connection}}
+          );
+
+          if (updateUserConnections.modifiedCount < 1) return false;
           return true;
      }
 
      async RemoveConnection(email: string, connection: string): Promise<boolean> {
+          const updateUserConnections = await UserModel.updateOne(
+               { email: email },
+               { $pull: {connections: connection}}
+          );
+
+          if (updateUserConnections.modifiedCount < 1) return false;
           return true;
      }
 
