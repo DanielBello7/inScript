@@ -14,7 +14,6 @@ import ImageModel from '../models/Image.models';
 import PostModel from '../models/Post.models';
 import UserModel from '../models/User.models';
 import NotificationModel from '../models/NotificationModel';
-import NotificationService from '../services/Notifications.service';
 
 
 
@@ -588,19 +587,44 @@ class MongoConnection implements DatabaseType {
 
 
      // Notifications
-     async GetNotifications(email: string): Promise<NotificationsType> {
-          return {} as NotificationsType;
+     async GetNotifications(email: string): Promise<NotificationsType[]> {
+          const response = await UserModel.findOne({email: email}).select('notifications').populate('notifications');
+
+          return [response.notifications];
      }
 
-     async ChangeNotificationStatus(id: string): Promise<boolean> {
+     async ChangeNotificationStatus(email: string, id: string): Promise<boolean> {
+          const response = await NotificationModel.updateOne(
+               {_id: id},
+               {$set: {isRead: true}}
+          );
+
+          if (response.modifiedCount < 1) return false;
+          
           return true;
      }
 
-     async DeleteNotification(id: string): Promise<boolean> {
+     async DeleteNotification(email: string, id: string): Promise<boolean> {
+          const updateUser = await UserModel.updateOne(
+               {email: email},
+               {$pull: {notifications: id}}
+          );
+
+          const response = await NotificationModel.deleteOne({_id: id});
+
+          if (response.deletedCount < 1) return false;
+          
           return true;
      }
 
-     async ClearAllNotifications(): Promise<boolean> {
+     async ClearAllNotifications(email: string): Promise<boolean> {
+          const response = await UserModel.updateOne(
+               {email: email},
+               {$pullAll: {notifications: ''}}
+          );
+
+          if (response.modifiedCount < 1) return false;
+
           return true;
      }
 }

@@ -65,7 +65,7 @@ export type DatabaseType = {
 
 
      // Notifications
-     GetNotifications: (email: string) => Promise<NotificationsType>,
+     GetNotifications: (email: string) => Promise<NotificationsType[]>,
      ChangeNotificationStatus: (email: string, id: string) => Promise<boolean>,
      DeleteNotification: (email: string, id: string) => Promise<boolean>,
      ClearAllNotifications: (email: string) => Promise<boolean>

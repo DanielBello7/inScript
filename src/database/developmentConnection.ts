@@ -237,7 +237,7 @@ class DevelopmentAPI implements DatabaseType {
 
 
      // Notifications
-     async GetNotifications(email: string): Promise<NotificationsType> {
+     async GetNotifications(email: string): Promise<NotificationsType[]> {
           return {} as NotificationsType;
      }
 
