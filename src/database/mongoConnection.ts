@@ -8,7 +8,7 @@ import { UserType, NewUser, ModifyDataType } from '../types/UserType.type';
 import { CommentType, NewComment } from '../types/CommentType.type';
 import { NewPostType, PostType } from '../types/PostType.type';
 import { ImageType, NewImage } from '../types/ImageType.type';
-import { NotificationsType } from '../types/NotificationsType.type';
+import { NewNotificationType, NotificationsType } from '../types/NotificationsType.type';
 import CommentsModel from '../models/Comments.models';
 import ImageModel from '../models/Image.models';
 import PostModel from '../models/Post.models';
@@ -631,6 +631,27 @@ class MongoConnection implements DatabaseType {
          if (response.modifiedCount < 1) return false;
 
          return true;
+   }
+
+   async CreateNotification (data: NewNotificationType): Promise<NotificationsType | false> {
+      const response = new NotificationModel({
+         title: data.title,
+         content: data.content,
+         isRead: false,
+         createdFrom: data.createdBy,
+         for: data.for
+      });
+
+      const submitResponse = await response.save();
+
+      if (!submitResponse) return false;
+
+      const saveNotification = await UserModel.updateOne(
+         {_id: data.for}, 
+         {$push: {notifications: submitResponse._id}}
+      );
+
+      return submitResponse;
    }
 }
 

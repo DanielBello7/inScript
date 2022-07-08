@@ -7,7 +7,7 @@ import { UserType, NewUser, ModifyDataType } from "../types/UserType.type";
 import { NewPostType, PostType } from "../types/PostType.type";
 import { NewComment, CommentType } from "../types/CommentType.type";
 import { NewImage, ImageType } from "../types/ImageType.type";
-import { NotificationsType } from "../types/NotificationsType.type";
+import { NotificationsType, NewNotificationType } from "../types/NotificationsType.type";
 // import bcrypt from 'bcrypt';
 
 
@@ -255,6 +255,10 @@ class DevelopmentAPI implements DatabaseType {
 
    async ClearAllNotifications(email: string): Promise<boolean> {
          return true;
+   }
+   
+   async CreateNotification (data: NewNotificationType): Promise<NotificationsType | false> {
+      return false;
    }
 }
 

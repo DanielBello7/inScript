@@ -6,6 +6,7 @@ import { DatabaseType } from '../types/Database.type';
 import { ModifyDataType, RequestInterface } from '../types/UserType.type';
 import { Response } from 'express';
 import Log from "../config/bunyan.config";
+import { NewNotificationType } from '../types/NotificationsType.type';
 
 
 // create the class
@@ -157,6 +158,15 @@ class UserController {
          const response = await this.conn.AddConnection(email, connectionID);
 
          if (!response) return res.status(400).json({msg: 'error adding connection'});
+
+         const data: NewNotificationType = {
+            content: `You were just followed by ${req.user.email}`,
+            createdBy: req.user._id,
+            for: connectionID,
+            title: 'New Following'
+         }
+
+         const createNotification = await this.conn.CreateNotification(data);
 
          return res.json({payload: 'Connection added'});
       }

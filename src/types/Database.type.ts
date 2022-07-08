@@ -6,7 +6,7 @@ import { UserType, NewUser, ModifyDataType } from "./UserType.type";
 import { NewPostType, PostType } from './PostType.type';
 import { NewComment, CommentType } from './CommentType.type';
 import { ImageType, NewImage } from './ImageType.type';
-import { NotificationsType } from './NotificationsType.type';
+import { NewNotificationType, NotificationsType } from './NotificationsType.type';
 
 
 // paginator response type
@@ -69,5 +69,6 @@ export type DatabaseType = {
      GetNotifications: (email: string) => Promise<NotificationsType[]>,
      ChangeNotificationStatus: (email: string, id: string) => Promise<boolean>,
      DeleteNotification: (email: string, id: string) => Promise<boolean>,
-     ClearAllNotifications: (email: string) => Promise<boolean>
+     ClearAllNotifications: (email: string) => Promise<boolean>,
+     CreateNotification: (data: NewNotificationType) => Promise<NotificationsType | false>
 }
