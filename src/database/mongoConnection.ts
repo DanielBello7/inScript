@@ -18,615 +18,620 @@ import NotificationModel from '../models/NotificationModel';
 
 
 class MongoConnection implements DatabaseType {
-     constructor(url: string) {
-          mongoose.connect(url, {}, () => {
-               Log.info('connected to database');
-          });
-     } 
+   constructor(url: string) {
+         mongoose.connect(url, {}, () => {
+            Log.info('connected to database');
+         });
+   } 
 
-     // Users
-     async GetUser(email: string): Promise<UserType[]> {
+   // Users
+   async GetUser(email: string): Promise<UserType[]> {
 
-          const response = await UserModel.find({email: email});
+         const response = await UserModel.find({email: email});
 
-          if (response.length <= 0) return [];
+         if (response.length <= 0) return [];
 
-          return [response[0]._doc];
-     }
+         return [response[0]._doc];
+   }
 
-     async GetRandomUser(email: string): Promise<UserType> {
+   async GetRandomUser(email: string): Promise<UserType> {
 
-          const response = await UserModel.aggregate([
-               {$match: {email: {$ne: email}}},
-               {$sample: {size: 1}}
-          ]);
+         const response = await UserModel.aggregate([
+            {$match: {email: {$ne: email}}},
+            {$sample: {size: 1}}
+         ]);
 
-          return response[0];
+         return response[0];
 
 
-          // const total = await UserModel.countDocuments();
-          
-          // const random = Math.floor(Math.random() * total);
+         // const total = await UserModel.countDocuments();
+         
+         // const random = Math.floor(Math.random() * total);
 
-          // const response = await UserModel.findOne({email: {$ne: email}}).skip(random);
+         // const response = await UserModel.findOne({email: {$ne: email}}).skip(random);
 
-          // console.log(response);
+         // console.log(response);
 
-          // return response._doc;
-     }
+         // return response._doc;
+   }
 
-     async GetUsers(page: number, limit: number): Promise<PaginatedResponse> {
-          const startIndex = (page - 1) * limit;
-          const endIndex = page * limit;
+   async GetUsers(page: number, limit: number): Promise<PaginatedResponse> {
+         const startIndex = (page - 1) * limit;
+         const endIndex = page * limit;
 
-          const total = await UserModel.countDocuments().exec();
+         const total = await UserModel.countDocuments().exec();
 
-          const response = await UserModel.find().limit(limit).skip(startIndex).exec();
+         const response = await UserModel.find().limit(limit).skip(startIndex).exec();
 
-          const resUsers = response.map(result => {
-               const { password, comments, uploads, ...newResUser } = result._doc;
-               return newResUser;
-          });
+         const resUsers = response.map(result => {
+            const { password, comments, uploads, ...newResUser } = result._doc;
+            return newResUser;
+         });
 
-          const payload: PaginatedResponse = {
-               currentPage: page,
-               hasMore: endIndex < total,
-               limit: limit,
-               results: resUsers,
-               totalFound: total
-          }
-          return payload
-     }
+         const payload: PaginatedResponse = {
+            currentPage: page,
+            hasMore: endIndex < total,
+            limit: limit,
+            results: resUsers,
+            totalFound: total
+         }
+         return payload
+   }
 
-     async CreateUser(user: NewUser): Promise<UserType | false> {
+   async CreateUser(user: NewUser): Promise<UserType | false> {
 
-          const newUser = new UserModel({
-               firstName: user.firstName,
-               lastName: user.lastName,
-               email: user.email,
-               password: user.password
-          });
+         const newUser = new UserModel({
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            password: user.password
+         });
 
-          const response = await newUser.save();
+         const response = await newUser.save();
 
-          if (!response) return false
+         if (!response) return false
 
-          return response
-     }
+         return response
+   }
 
-     async ModifyUser(email: string, data: ModifyDataType): Promise<boolean> {
-          const response = await UserModel.updateOne(
-               {email: email}, 
-               {$set: {
-                    firstName: data.firstName,
-                    lastName: data.lastName,
-                    profileImg: data.profileImg
-               }}
-          );
+   async ModifyUser(email: string, data: ModifyDataType): Promise<boolean> {
+         const response = await UserModel.updateOne(
+            {email: email}, 
+            {$set: {
+                  firstName: data.firstName,
+                  lastName: data.lastName,
+                  profileImg: data.profileImg
+            }}
+         );
 
-          if (response.modifiedCount <= 0) return false;
-          return true;
-     }
+         if (response.modifiedCount <= 0) return false;
+         return true;
+   }
 
-     async DeleteUser(email: string): Promise<boolean> {
-          const response = await UserModel.deleteOne({email: email});
-          if (response.deletedCount <= 0) return false;
-          return true;
-     }
+   async DeleteUser(email: string): Promise<boolean> {
+         const response = await UserModel.deleteOne({email: email});
+         if (response.deletedCount <= 0) return false;
+         return true;
+   }
 
-     async GetConnections(email: string): Promise<any[]> {
-          const response = await UserModel.findOne({email: email})
-          .select('connections')
-          .populate('connections', ['_id', 'firstName', 'lastName', 'profileImg', 'email', 'connections']);
-          return response.connections;
-     }
+   async GetConnections(email: string): Promise<any[]> {
+         const response = await UserModel.findOne({email: email})
+         .select('connections')
+         .populate('connections', ['_id', 'firstName', 'lastName', 'profileImg', 'email', 'connections']);
+         return response.connections;
+   }
 
-     async AddConnection(email: string, connection: string): Promise<boolean> {
+   async AddConnection(email: string, connection: string): Promise<boolean> {
 
-          const updateUserConnections = await UserModel.updateOne(
-               { email: email },
-               { $push: {connections: connection}}
-          );
+         const updateUserConnections = await UserModel.updateOne(
+            { email: email },
+            { $push: {connections: connection}}
+         );
 
-          if (updateUserConnections.modifiedCount < 1) return false;
-          return true;
-     }
+         if (updateUserConnections.modifiedCount < 1) return false;
+         return true;
+   }
 
-     async RemoveConnection(email: string, connection: string): Promise<boolean> {
-          const updateUserConnections = await UserModel.updateOne(
-               { email: email },
-               { $pull: {connections: connection}}
-          );
+   async RemoveConnection(email: string, connection: string): Promise<boolean> {
+         const updateUserConnections = await UserModel.updateOne(
+            { email: email },
+            { $pull: {connections: connection}}
+         );
 
-          if (updateUserConnections.modifiedCount < 1) return false;
-          return true;
-     }
+         if (updateUserConnections.modifiedCount < 1) return false;
+         return true;
+   }
 
+   async GetProfileImg(email: string): Promise<String> {
+      const response = await UserModel.findOne({email: email});
+      return response.profileImg;
+   }
 
 
 
 
-     // Posts
-     async NewPost(data: NewPostType): Promise<PostType | false> {
 
-          const newPost = new PostModel({
-               text: data.text,
-               createdBy: data.createdBy,
-               likes: data.likes,
-               reposts: data.reposts,
-               postType: data.postType,
-               mediaType: data.mediaType,
-               media: data.media
-          });
+   // Posts
+   async NewPost(data: NewPostType): Promise<PostType | false> {
 
-          const response = await newPost.save();
+         const newPost = new PostModel({
+            text: data.text,
+            createdBy: data.createdBy,
+            likes: data.likes,
+            reposts: data.reposts,
+            postType: data.postType,
+            mediaType: data.mediaType,
+            media: data.media
+         });
 
-          if (!response) return false;
+         const response = await newPost.save();
 
-          const updateUser = await UserModel.updateOne(
-               { _id: data.createdBy },
-               { $push: {posts: response._id}}
-          );
+         if (!response) return false;
 
-          if (updateUser.matchedCount <= 0) return false;
+         const updateUser = await UserModel.updateOne(
+            { _id: data.createdBy },
+            { $push: {posts: response._id}}
+         );
 
-          return response;
-     }
+         if (updateUser.matchedCount <= 0) return false;
 
-     async GetPost(id: string): Promise<PostType[]> {
-          
-          const response = await PostModel.findOne({_id: id})
-          .populate('createdBy', ['firstName', 'lastName', 'email']);
-          return [response];
-     }
+         return response;
+   }
 
-     async GetARandomPost(): Promise<PostType> {
-          // const response = await PostModel.aggregate([
-          //      {$sample: {size: 1}}
-          // ])
+   async GetPost(id: string): Promise<PostType[]> {
+         
+         const response = await PostModel.findOne({_id: id})
+         .populate('createdBy', ['firstName', 'lastName', 'email']);
+         return [response];
+   }
 
+   async GetARandomPost(): Promise<PostType> {
+         // const response = await PostModel.aggregate([
+         //      {$sample: {size: 1}}
+         // ])
 
-          const total = await PostModel.countDocuments();
-          
-          const random = Math.floor(Math.random() * total);
 
-          const response = await PostModel.findOne()
-          .populate('createdBy', ['firstName', 'lastName', 'email']).skip(random);
+         const total = await PostModel.countDocuments();
+         
+         const random = Math.floor(Math.random() * total);
 
-          return response;
-     }
+         const response = await PostModel.findOne()
+         .populate('createdBy', ['firstName', 'lastName', 'email']).skip(random);
 
-     async GetAllPost(page: number, limit: number): Promise<PaginatedResponse> {
-          const startIndex = (page - 1) * limit;
+         return response;
+   }
 
-          const endIndex = page * limit;
+   async GetAllPost(page: number, limit: number): Promise<PaginatedResponse> {
+         const startIndex = (page - 1) * limit;
 
-          const total = await PostModel.countDocuments().exec();
+         const endIndex = page * limit;
 
-          const response = await PostModel.find().populate(
-               'createdBy', ['firstName', 'lastName', 'email']
-          ).limit(limit).skip(startIndex).exec();
+         const total = await PostModel.countDocuments().exec();
 
-          const payload: PaginatedResponse = {
-               currentPage: page,
-               hasMore: endIndex < total,
-               limit: limit,
-               results: response,
-               totalFound: total
-          }
+         const response = await PostModel.find().populate(
+            'createdBy', ['firstName', 'lastName', 'email']
+         ).limit(limit).skip(startIndex).exec();
 
-          return payload;
-     }
+         const payload: PaginatedResponse = {
+            currentPage: page,
+            hasMore: endIndex < total,
+            limit: limit,
+            results: response,
+            totalFound: total
+         }
 
-     async GetUserPosts(email: string, page: number, limit: number): Promise<PaginatedResponse> {
+         return payload;
+   }
 
-          const startIndex = (page - 1) * limit;
+   async GetUserPosts(email: string, page: number, limit: number): Promise<PaginatedResponse> {
 
-          const endIndex = page * limit;
+         const startIndex = (page - 1) * limit;
 
-          const count = await UserModel.find({email: email})
+         const endIndex = page * limit;
 
-          const total = count[0].posts.length;
+         const count = await UserModel.find({email: email})
 
-          const response = await UserModel.findOne({email: email})
-          .select('posts')
-          .populate([
-               {
-                    path: 'posts',
-                    populate: {
-                         path: 'createdBy',
-                         select: ['firstName', 'lastName', 'email']         
-                    }
-               }
-          ]);
+         const total = count[0].posts.length;
 
-          const selectedPoints = response.posts.slice(startIndex, endIndex);
+         const response = await UserModel.findOne({email: email})
+         .select('posts')
+         .populate([
+            {
+                  path: 'posts',
+                  populate: {
+                        path: 'createdBy',
+                        select: ['firstName', 'lastName', 'email']         
+                  }
+            }
+         ]);
 
-          const payload: PaginatedResponse = {
-               currentPage: page,
-               hasMore: endIndex < total,
-               limit: limit,
-               results: selectedPoints,
-               totalFound: total
-          }
+         const selectedPoints = response.posts.slice(startIndex, endIndex);
 
-          return payload
-     }
+         const payload: PaginatedResponse = {
+            currentPage: page,
+            hasMore: endIndex < total,
+            limit: limit,
+            results: selectedPoints,
+            totalFound: total
+         }
 
-     async GetUserLikedPosts(email: string, page: number, limit: number): Promise<PaginatedResponse> {
+         return payload
+   }
 
-          const startIndex = (page - 1) * limit;
+   async GetUserLikedPosts(email: string, page: number, limit: number): Promise<PaginatedResponse> {
 
-          const endIndex = page * limit;
+         const startIndex = (page - 1) * limit;
 
-          const count = await UserModel.find({email: email})
+         const endIndex = page * limit;
 
-          const total = count[0].likedPosts.length;
+         const count = await UserModel.find({email: email})
 
-          const response = await UserModel.findOne({email: email})
-          .select('likedPosts')
-          .populate([
-               {
-                    path: 'likedPosts',
-                    populate: {
-                         path: 'createdBy',
-                         select: ['firstName', 'lastName', 'email']         
-                    }
-               }
-          ]);
+         const total = count[0].likedPosts.length;
 
-          const selectedPoints = response.likedPosts.slice(startIndex, endIndex);
+         const response = await UserModel.findOne({email: email})
+         .select('likedPosts')
+         .populate([
+            {
+                  path: 'likedPosts',
+                  populate: {
+                        path: 'createdBy',
+                        select: ['firstName', 'lastName', 'email']         
+                  }
+            }
+         ]);
 
-          const payload: PaginatedResponse = {
-               currentPage: page,
-               hasMore: endIndex < total,
-               limit: limit,
-               results: selectedPoints,
-               totalFound: total
-          }
+         const selectedPoints = response.likedPosts.slice(startIndex, endIndex);
 
-          return payload
-     }
+         const payload: PaginatedResponse = {
+            currentPage: page,
+            hasMore: endIndex < total,
+            limit: limit,
+            results: selectedPoints,
+            totalFound: total
+         }
 
-     async GetUserRepostedPosts(email: string, page: number, limit: number): Promise<PaginatedResponse> {
+         return payload
+   }
 
-          const startIndex = (page - 1) * limit;
+   async GetUserRepostedPosts(email: string, page: number, limit: number): Promise<PaginatedResponse> {
 
-          const endIndex = page * limit;
+         const startIndex = (page - 1) * limit;
 
-          const count = await UserModel.find({email: email})
+         const endIndex = page * limit;
 
-          const total = count[0].repostedPosts.length;
+         const count = await UserModel.find({email: email})
 
-          const response = await UserModel.findOne({email: email})
-          .select('repostedPosts')
-          .populate([
-               {
-                    path: 'repostedPosts',
-                    populate: {
-                         path: 'createdBy',
-                         select: ['firstName', 'lastName', 'email']         
-                    }
-               }
-          ]);
+         const total = count[0].repostedPosts.length;
 
-          const selectedPoints = response.repostedPosts.slice(startIndex, endIndex);
+         const response = await UserModel.findOne({email: email})
+         .select('repostedPosts')
+         .populate([
+            {
+                  path: 'repostedPosts',
+                  populate: {
+                        path: 'createdBy',
+                        select: ['firstName', 'lastName', 'email']         
+                  }
+            }
+         ]);
 
-          const payload: PaginatedResponse = {
-               currentPage: page,
-               hasMore: endIndex < total,
-               limit: limit,
-               results: selectedPoints,
-               totalFound: total
-          }
+         const selectedPoints = response.repostedPosts.slice(startIndex, endIndex);
 
-          return payload
-     }
+         const payload: PaginatedResponse = {
+            currentPage: page,
+            hasMore: endIndex < total,
+            limit: limit,
+            results: selectedPoints,
+            totalFound: total
+         }
 
-     async LikePost(id: string, user: string): Promise<boolean> {
-          
-          const updateLikes = await PostModel.updateOne(
-               { _id: id },
-               { $inc: {likes: 1} }
-          );
+         return payload
+   }
 
-          if (updateLikes.matchedCount < 1) return false;
+   async LikePost(id: string, user: string): Promise<boolean> {
+         
+         const updateLikes = await PostModel.updateOne(
+            { _id: id },
+            { $inc: {likes: 1} }
+         );
 
-          const updateLikers = await PostModel.updateOne(
-               { _id: id },
-               { $push: {likedBy: user}}
-          );
+         if (updateLikes.matchedCount < 1) return false;
 
-          if (updateLikers.modifiedCount < 1) return false;
+         const updateLikers = await PostModel.updateOne(
+            { _id: id },
+            { $push: {likedBy: user}}
+         );
 
-          const updateUser = await UserModel.updateOne(
-               { _id: user },
-               { $push: {likedPosts: id}}
-          );
+         if (updateLikers.modifiedCount < 1) return false;
 
-          if (updateUser.modifiedCount < 1) return false;
+         const updateUser = await UserModel.updateOne(
+            { _id: user },
+            { $push: {likedPosts: id}}
+         );
 
-          return true;
-     }
+         if (updateUser.modifiedCount < 1) return false;
 
-     async UnlikePost(id: string, user: string): Promise<boolean> {
+         return true;
+   }
 
-          const dislike = await PostModel.updateOne(
-               { _id: id },
-               { $inc: {likes: -1} }
-          );
+   async UnlikePost(id: string, user: string): Promise<boolean> {
 
-          if (dislike.modifiedCount < 1) return false;
+         const dislike = await PostModel.updateOne(
+            { _id: id },
+            { $inc: {likes: -1} }
+         );
 
-          const removeUserFromLikedList = await PostModel.updateOne(
-               { _id: id },
-               { $pull: {likedBy: user} }
-          );
+         if (dislike.modifiedCount < 1) return false;
 
-          if (removeUserFromLikedList.modifiedCount < 1) return false;
+         const removeUserFromLikedList = await PostModel.updateOne(
+            { _id: id },
+            { $pull: {likedBy: user} }
+         );
 
-          const updateUser = await UserModel.updateOne(
-               { _id: user },
-               { $pull: {likedPosts: id} }
-          );
+         if (removeUserFromLikedList.modifiedCount < 1) return false;
 
-          if (updateUser.modifiedCount < 1) return false;
+         const updateUser = await UserModel.updateOne(
+            { _id: user },
+            { $pull: {likedPosts: id} }
+         );
 
-          return true;
-     }
+         if (updateUser.modifiedCount < 1) return false;
 
-     async RepostPost(id: string, user: string): Promise<boolean> {
+         return true;
+   }
 
-          const updateSelectedPost = await PostModel.updateOne(
-               { _id: id },
-               { $inc: {reposts: 1} }
-          );
+   async RepostPost(id: string, user: string): Promise<boolean> {
 
-          if (updateSelectedPost.modifiedCount < 1) return false;
+         const updateSelectedPost = await PostModel.updateOne(
+            { _id: id },
+            { $inc: {reposts: 1} }
+         );
 
-          const addUserToRepostList = await PostModel.updateOne(
-               { _id: id },
-               { $push: {repostedBy: user} }
-          );
+         if (updateSelectedPost.modifiedCount < 1) return false;
 
-          if (addUserToRepostList.modifiedCount < 1) return false;
+         const addUserToRepostList = await PostModel.updateOne(
+            { _id: id },
+            { $push: {repostedBy: user} }
+         );
 
-          const updateUser = await UserModel.updateOne(
-               { _id: user },
-               { $push: {repostedPosts: id} }
-          );
+         if (addUserToRepostList.modifiedCount < 1) return false;
 
-          if (updateUser.modifiedCount < 1) return false;
+         const updateUser = await UserModel.updateOne(
+            { _id: user },
+            { $push: {repostedPosts: id} }
+         );
 
-          return true;
-     }
+         if (updateUser.modifiedCount < 1) return false;
 
-     async UnRepostPost(id: string, user: string): Promise<boolean> {
+         return true;
+   }
 
-          const updatePostRepost = await PostModel.updateOne(
-               { _id: id },
-               { $inc: {reposts: -1} }
-          );
+   async UnRepostPost(id: string, user: string): Promise<boolean> {
 
-          if (updatePostRepost.modifiedCount < 1) return false;
+         const updatePostRepost = await PostModel.updateOne(
+            { _id: id },
+            { $inc: {reposts: -1} }
+         );
 
-          const addUser = await PostModel.updateOne(
-               { _id: id },
-               { $pull: {repostedBy: user} }
-          );
+         if (updatePostRepost.modifiedCount < 1) return false;
 
-          if (addUser.modifiedCount < 1) return false;
+         const addUser = await PostModel.updateOne(
+            { _id: id },
+            { $pull: {repostedBy: user} }
+         );
 
-          const updateUser = await UserModel.updateOne(
-               { _id: user },
-               { $pull: {repostedPosts: id} }
-          );
+         if (addUser.modifiedCount < 1) return false;
 
-          if (updateUser.modifiedCount < 1) return false;
+         const updateUser = await UserModel.updateOne(
+            { _id: user },
+            { $pull: {repostedPosts: id} }
+         );
 
-          return true;
-     }
+         if (updateUser.modifiedCount < 1) return false;
 
+         return true;
+   }
 
 
 
 
-     // Comments
-     async CreateComment(data: NewComment, type: 'post' | 'comment'): Promise<CommentType | false> {
-          const newComment = new CommentsModel({
-               ...data
-          });
 
-          const response = await newComment.save();
+   // Comments
+   async CreateComment(data: NewComment, type: 'post' | 'comment'): Promise<CommentType | false> {
+         const newComment = new CommentsModel({
+            ...data
+         });
 
-          if (!response) return false;
+         const response = await newComment.save();
 
-          const commentID = response._id as string;
+         if (!response) return false;
 
-          const updateUser = await UserModel.updateOne(
-               {_id: data.createdBy },
-               { $push: {comments: commentID} }
-          );
+         const commentID = response._id as string;
 
-          if (updateUser.modifiedCount < 1) return false;
+         const updateUser = await UserModel.updateOne(
+            {_id: data.createdBy },
+            { $push: {comments: commentID} }
+         );
 
-          if (type === 'post') {
-               const updatePost = await PostModel.updateOne(
-                    { _id: data.for },
-                    { $push: {comments: commentID} }
-               );               
-          }
+         if (updateUser.modifiedCount < 1) return false;
 
-          else {
-               const updateComment = await CommentsModel.updateOne(
-                    { _id: data.for },
-                    { $push: {comments: commentID} }
-               );
-          }
+         if (type === 'post') {
+            const updatePost = await PostModel.updateOne(
+                  { _id: data.for },
+                  { $push: {comments: commentID} }
+            );               
+         }
 
-          return response;
-     }
+         else {
+            const updateComment = await CommentsModel.updateOne(
+                  { _id: data.for },
+                  { $push: {comments: commentID} }
+            );
+         }
 
-     async GetComment(id: string): Promise<CommentType[]> {
+         return response;
+   }
 
-          const response = await CommentsModel.findOne({_id: id}).populate(
-               'createdBy', ['firstName', 'lastName', 'email']
-          );
+   async GetComment(id: string): Promise<CommentType[]> {
 
-          return [response];
-     }
-     
-     async GetPostComments(id: string, page: number, limit: number): Promise<PaginatedResponse> {
+         const response = await CommentsModel.findOne({_id: id}).populate(
+            'createdBy', ['firstName', 'lastName', 'email']
+         );
 
-          const startIndex = (page - 1) * limit;
+         return [response];
+   }
+   
+   async GetPostComments(id: string, page: number, limit: number): Promise<PaginatedResponse> {
 
-          const endIndex = page * limit;
+         const startIndex = (page - 1) * limit;
 
-          const total = await PostModel.findOne({_id: id})
+         const endIndex = page * limit;
 
-          const mainTotal = total.comments.length;
+         const total = await PostModel.findOne({_id: id})
 
-          const response = await PostModel.findOne({_id: id})
-          .select('comments')
-          .populate([
-               {
-                    path: 'comments',
-                    populate: {
-                         path: 'createdBy',
-                         select: ['firstName', 'lastName', 'email']
-                    }
-               }
-          ]);
+         const mainTotal = total.comments.length;
 
-          const selectedPoints = response.comments.slice(startIndex, endIndex);
+         const response = await PostModel.findOne({_id: id})
+         .select('comments')
+         .populate([
+            {
+                  path: 'comments',
+                  populate: {
+                        path: 'createdBy',
+                        select: ['firstName', 'lastName', 'email']
+                  }
+            }
+         ]);
 
-          const payload: PaginatedResponse = {
-               currentPage: page,
-               hasMore: endIndex < mainTotal,
-               limit: limit,
-               results: selectedPoints,
-               totalFound: mainTotal
-          }
+         const selectedPoints = response.comments.slice(startIndex, endIndex);
 
-          return payload;
-     }
+         const payload: PaginatedResponse = {
+            currentPage: page,
+            hasMore: endIndex < mainTotal,
+            limit: limit,
+            results: selectedPoints,
+            totalFound: mainTotal
+         }
 
-     async GetCommentComments(id: string, page: number, limit: number): Promise<PaginatedResponse> {
+         return payload;
+   }
 
-          const startIndex = (page - 1) * limit;
+   async GetCommentComments(id: string, page: number, limit: number): Promise<PaginatedResponse> {
 
-          const endIndex = page * limit;
+         const startIndex = (page - 1) * limit;
 
-          const total = await CommentsModel.findOne({_id: id})
+         const endIndex = page * limit;
 
-          const mainTotal = total.comments.length;
+         const total = await CommentsModel.findOne({_id: id})
 
-          const response = await CommentsModel.findOne({_id: id})
-          .select('comments')
-          .populate([
-               {
-                    path: 'comments',
-                    populate: {
-                         path: 'createdBy',
-                         select: ['firstName', 'lastName', 'email']
-                    }
-               }
-          ]);
+         const mainTotal = total.comments.length;
 
-          const selectedPoints = response.comments.slice(startIndex, endIndex);
+         const response = await CommentsModel.findOne({_id: id})
+         .select('comments')
+         .populate([
+            {
+                  path: 'comments',
+                  populate: {
+                        path: 'createdBy',
+                        select: ['firstName', 'lastName', 'email']
+                  }
+            }
+         ]);
 
-          const payload: PaginatedResponse = {
-               currentPage: page,
-               hasMore: endIndex < mainTotal,
-               limit: limit,
-               results: selectedPoints,
-               totalFound: mainTotal
-          }
+         const selectedPoints = response.comments.slice(startIndex, endIndex);
 
-          return payload;
-     }
+         const payload: PaginatedResponse = {
+            currentPage: page,
+            hasMore: endIndex < mainTotal,
+            limit: limit,
+            results: selectedPoints,
+            totalFound: mainTotal
+         }
 
+         return payload;
+   }
 
 
 
 
-     // Image / Uploads
-     async NewUpload(data: NewImage): Promise<ImageType | false> {
 
-          const newImage = new ImageModel({...data});
+   // Image / Uploads
+   async NewUpload(data: NewImage): Promise<ImageType | false> {
 
-          const response = await newImage.save();
+         const newImage = new ImageModel({...data});
 
-          if (!response) return false;
+         const response = await newImage.save();
 
-          const updateUser = await UserModel.updateOne(
-               { _id: data.createdBy },
-               { $push: {uploads: response._id} }
-          );
+         if (!response) return false;
 
-          if (updateUser.modifiedCount < 1) return false;
+         const updateUser = await UserModel.updateOne(
+            { _id: data.createdBy },
+            { $push: {uploads: response._id} }
+         );
 
-          return response;
-     }
+         if (updateUser.modifiedCount < 1) return false;
 
-     async GetImage(imgId: string): Promise<ImageType[]> {
+         return response;
+   }
 
-          const getImage = await ImageModel.find({ _id: imgId });
-          
-          return getImage;
-     }
+   async GetImage(imgId: string): Promise<ImageType[]> {
 
-     async DeleteImage(imgId: string, email: string): Promise<boolean> {
-          const response = await ImageModel.deleteOne({_id: imgId});
-          if (response.deletedCount <= 0) return false;
-          return true;
-     }
+         const getImage = await ImageModel.find({ _id: imgId });
+         
+         return getImage;
+   }
 
+   async DeleteImage(imgId: string, email: string): Promise<boolean> {
+         const response = await ImageModel.deleteOne({_id: imgId});
+         if (response.deletedCount <= 0) return false;
+         return true;
+   }
 
 
 
 
-     // Notifications
-     async GetNotifications(email: string): Promise<NotificationsType[]> {
-          const response = await UserModel.findOne({email: email}).select('notifications').populate('notifications');
 
-          return [response.notifications];
-     }
+   // Notifications
+   async GetNotifications(email: string): Promise<NotificationsType[]> {
+         const response = await UserModel.findOne({email: email}).select('notifications').populate('notifications');
 
-     async ChangeNotificationStatus(email: string, id: string): Promise<boolean> {
-          const response = await NotificationModel.updateOne(
-               {_id: id},
-               {$set: {isRead: true}}
-          );
+         return [response.notifications];
+   }
 
-          if (response.modifiedCount < 1) return false;
-          
-          return true;
-     }
+   async ChangeNotificationStatus(email: string, id: string): Promise<boolean> {
+         const response = await NotificationModel.updateOne(
+            {_id: id},
+            {$set: {isRead: true}}
+         );
 
-     async DeleteNotification(email: string, id: string): Promise<boolean> {
-          const updateUser = await UserModel.updateOne(
-               {email: email},
-               {$pull: {notifications: id}}
-          );
+         if (response.modifiedCount < 1) return false;
+         
+         return true;
+   }
 
-          const response = await NotificationModel.deleteOne({_id: id});
+   async DeleteNotification(email: string, id: string): Promise<boolean> {
+         const updateUser = await UserModel.updateOne(
+            {email: email},
+            {$pull: {notifications: id}}
+         );
 
-          if (response.deletedCount < 1) return false;
-          
-          return true;
-     }
+         const response = await NotificationModel.deleteOne({_id: id});
 
-     async ClearAllNotifications(email: string): Promise<boolean> {
-          const response = await UserModel.updateOne(
-               {email: email},
-               {$pullAll: {notifications: ''}}
-          );
+         if (response.deletedCount < 1) return false;
+         
+         return true;
+   }
 
-          if (response.modifiedCount < 1) return false;
+   async ClearAllNotifications(email: string): Promise<boolean> {
+         const response = await UserModel.updateOne(
+            {email: email},
+            {$pullAll: {notifications: ''}}
+         );
 
-          return true;
-     }
+         if (response.modifiedCount < 1) return false;
+
+         return true;
+   }
 }
 
 

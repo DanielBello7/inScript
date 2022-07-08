@@ -46,6 +46,7 @@ export type DatabaseType = {
      UnlikePost: (id: string, email: string) => Promise<boolean>,
      RepostPost: (id: string, email: string) => Promise<boolean>,
      UnRepostPost: (id: string, email: string) => Promise<boolean>,
+     GetProfileImg: (email: string) => Promise<String>
 
 
 
