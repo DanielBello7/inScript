@@ -126,14 +126,14 @@ class DevelopmentAPI implements DatabaseType {
 
    // Posts
    async NewPost(data: NewPostType): Promise<PostType | false> {
-         const newPost = {
-            ...data,
-            likedBy: [],
-            repostedBy: [],
-            comments: [],
-            _id: `${Math.random()}`,
-            createdAt: new Date()
-         }
+         // const newPost = {
+         //    ...data,
+         //    likedBy: [],
+         //    repostedBy: [],
+         //    comments: [],
+         //    _id: `${Math.random()}`,
+         //    createdAt: new Date()
+         // }
 
          // this.posts.push(newPost);
 
