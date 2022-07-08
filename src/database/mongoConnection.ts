@@ -181,7 +181,7 @@ class MongoConnection implements DatabaseType {
    async GetPost(id: string): Promise<PostType[]> {
          
          const response = await PostModel.findOne({_id: id})
-         .populate('createdBy', ['firstName', 'lastName', 'email']);
+         .populate('createdBy', ['firstName', 'lastName', 'email', 'profileImg']);
          return [response];
    }
 
@@ -196,7 +196,7 @@ class MongoConnection implements DatabaseType {
          const random = Math.floor(Math.random() * total);
 
          const response = await PostModel.findOne()
-         .populate('createdBy', ['firstName', 'lastName', 'email']).skip(random);
+         .populate('createdBy', ['firstName', 'lastName', 'email', 'profileImg']).skip(random);
 
          return response;
    }
@@ -209,7 +209,7 @@ class MongoConnection implements DatabaseType {
          const total = await PostModel.countDocuments().exec();
 
          const response = await PostModel.find().populate(
-            'createdBy', ['firstName', 'lastName', 'email']
+            'createdBy', ['firstName', 'lastName', 'email', 'profileImg']
          ).limit(limit).skip(startIndex).exec();
 
          const payload: PaginatedResponse = {
@@ -240,7 +240,7 @@ class MongoConnection implements DatabaseType {
                   path: 'posts',
                   populate: {
                         path: 'createdBy',
-                        select: ['firstName', 'lastName', 'email']         
+                        select: ['firstName', 'lastName', 'email', 'profileImg']         
                   }
             }
          ]);
@@ -275,7 +275,7 @@ class MongoConnection implements DatabaseType {
                   path: 'likedPosts',
                   populate: {
                         path: 'createdBy',
-                        select: ['firstName', 'lastName', 'email']         
+                        select: ['firstName', 'lastName', 'email', 'profileImg']         
                   }
             }
          ]);
@@ -310,7 +310,7 @@ class MongoConnection implements DatabaseType {
                   path: 'repostedPosts',
                   populate: {
                         path: 'createdBy',
-                        select: ['firstName', 'lastName', 'email']         
+                        select: ['firstName', 'lastName', 'email', 'profileImg']         
                   }
             }
          ]);
@@ -475,7 +475,7 @@ class MongoConnection implements DatabaseType {
    async GetComment(id: string): Promise<CommentType[]> {
 
          const response = await CommentsModel.findOne({_id: id}).populate(
-            'createdBy', ['firstName', 'lastName', 'email']
+            'createdBy', ['firstName', 'lastName', 'email', 'profileImg']
          );
 
          return [response];
@@ -498,7 +498,7 @@ class MongoConnection implements DatabaseType {
                   path: 'comments',
                   populate: {
                         path: 'createdBy',
-                        select: ['firstName', 'lastName', 'email']
+                        select: ['firstName', 'lastName', 'email', 'profileImg']
                   }
             }
          ]);
@@ -533,7 +533,7 @@ class MongoConnection implements DatabaseType {
                   path: 'comments',
                   populate: {
                         path: 'createdBy',
-                        select: ['firstName', 'lastName', 'email']
+                        select: ['firstName', 'lastName', 'email', 'profileImg']
                   }
             }
          ]);
@@ -594,8 +594,7 @@ class MongoConnection implements DatabaseType {
    // Notifications
    async GetNotifications(email: string): Promise<NotificationsType[]> {
          const response = await UserModel.findOne({email: email}).select('notifications').populate('notifications');
-
-         return [response.notifications];
+         return response.notifications;
    }
 
    async ChangeNotificationStatus(email: string, id: string): Promise<boolean> {
