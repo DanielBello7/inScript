@@ -5,8 +5,8 @@
 import { DatabaseType } from '../types/Database.type';
 import { ModifyDataType, RequestInterface } from '../types/UserType.type';
 import { Response } from 'express';
-import Log from "../config/bunyan.config";
 import { NewNotificationType } from '../types/NotificationsType.type';
+import Log from "../config/bunyan.config";
 
 
 // create the class
