@@ -22,7 +22,7 @@ export default (conn: DatabaseType) => {
      router.post('/', 
      [
           check('for').trim().isString().escape().withMessage('post id required'),
-          check('text').trim().isString().escape().withMessage('comment required'),
+          check('text').trim().isString().withMessage('comment required'),
           check('type').trim().isString().escape().withMessage('comment required')
      ], 
      ValidateRequest,

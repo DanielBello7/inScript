@@ -11,11 +11,11 @@ import { NewNotificationType, NotificationsType } from './NotificationsType.type
 
 // paginator response type
 export type PaginatedResponse = {
-     results: any[],
-     hasMore: boolean,
-     totalFound: number,
-     currentPage: number,
-     limit: number
+   results: any[],
+   hasMore: boolean,
+   totalFound: number,
+   currentPage: number,
+   limit: number
 }
 
 
@@ -41,7 +41,7 @@ export type DatabaseType = {
      GetAllPost: (page: number, limit: number) => Promise<PaginatedResponse>,
      GetUserPosts: (email: string, page: number, limit: number) => Promise<PaginatedResponse>,
      GetUserLikedPosts: (email: string, page: number, limit: number) => Promise<PaginatedResponse>,
-     GetUserRepostedPosts: (email: string, page: number, limit: number) => Promise<PaginatedResponse>,
+     GetUserRepostedPosts: (email: string, page: number, limit: number) => Promise<PaginatedResponse>, 
      LikePost: (id: string, email: string) => Promise<boolean>,
      UnlikePost: (id: string, email: string) => Promise<boolean>,
      RepostPost: (id: string, email: string) => Promise<boolean>,

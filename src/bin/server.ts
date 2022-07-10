@@ -15,27 +15,30 @@ import ServerApp from '../server';
 import http from 'http';
 import envConfig from '../config/env.config';
 import MongoConnection from '../database/mongoConnection';
-import DevelopmentAPI from '../database/developmentConnection';
+// import ip from 'ip';
+// import DevelopmentAPI from '../database/developmentConnection';
 
 // use the env variables
 envConfig();
 
 // create instance of the database connection
 const conn = new MongoConnection(process.env.URL as string);
-const dev = new DevelopmentAPI();
+// const dev = new DevelopmentAPI();
 
 
 // get app from server app function
 const serverApp = ServerApp(conn);
 const server = http.createServer(serverApp);
 
-
+// address for the ip on the public network
+// const address = ip.address();
 const port = process.env.PORT || 2022;
 serverApp.set('port', port);
 
 
 function onListening() {
-     Log.info(`server active on port:${port}`);
+   // Log.info(`server active on http://${address}:${port}`);
+   Log.info(`server active on http://localhost:${port}`);
 }
 
 function onError(error: ErrorHandler){
@@ -59,4 +62,6 @@ server.on('error', onError);
 
 
 // iniitate server
+// this one works for opening the server on a public network
+// server.listen(port, parseInt(address));
 server.listen(port);

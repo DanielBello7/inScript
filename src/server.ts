@@ -23,12 +23,12 @@ function ServerApp(conn: DatabaseType) {
      const app: Application = express();
 
      // list of accepted domain names
-     const whiteList = ['http://localhost:3000'];
+     const whiteList = ['http://localhost:3000', 'http://192.168.0.131:3000'];
 
      // middlewares
      app.use(cors({
-          credentials: true,
-          origin: whiteList
+         credentials: true,
+         origin: whiteList
      }));
      app.use(compression());
      app.use(express.json());
