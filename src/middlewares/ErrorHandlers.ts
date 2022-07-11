@@ -14,7 +14,7 @@ function HandleIconError(req: Request, res: Response, next: NextFunction) {
 
 // 404 page not found error
 function HandlePageNotFound(req: Request, res: Response) {
-     return res.status(404).json({msg: 'page not found'});
+     return res.status(404).json({msg: 'Page not found'});
 }
 
 

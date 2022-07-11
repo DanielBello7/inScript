@@ -27,11 +27,11 @@ class AuthController {
 
                const response = await this.conn.GetUser(email);
 
-               if (response.length <= 0) return res.status(400).json({msg: 'user not registered'});
+               if (response.length <= 0) return res.status(400).json({msg: 'User not registered'});
 
                const confirmation = await bcrypt.compare(req.body.password, response[0].password);
 
-               if (!confirmation) return res.status(400).json({msg: 'invalid credentials'});
+               if (!confirmation) return res.status(400).json({msg: 'Invalid credentials'});
 
                const { password, ...user } = response[0];
 

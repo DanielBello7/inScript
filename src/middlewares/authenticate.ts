@@ -16,10 +16,10 @@ function __verifyUser(req: RequestInterface, res: Response, next: NextFunction) 
      const authorizationHeader = req.headers['authorization'];
      const token = authorizationHeader && authorizationHeader.split(' ')[1];
      if (token == null) 
-          return res.status(401).json({msg: 'invalid credentials'});
+          return res.status(401).json({msg: 'Invalid credentials'});
 
      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string, (error, user) => {
-          if (error) return res.status(400).json({msg: 'invalid token'});
+          if (error) return res.status(400).json({msg: 'Session invalid'});
           req.user = user;
           return next();
      });

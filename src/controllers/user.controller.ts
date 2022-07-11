@@ -31,11 +31,11 @@ class UserController {
 
          const check = await this.conn.GetUser(newUser.email);
 
-         if (check.length > 0) return res.status(400).json({msg: 'user exists'});
+         if (check.length > 0) return res.status(400).json({msg: 'User already registered'});
 
          const response = await this.conn.CreateUser(newUser);
 
-         if (!response) return res.status(400).json({msg: 'error creating new user'});
+         if (!response) return res.status(400).json({msg: 'Error creating new user'});
 
          const { password, ...resUser } = response;
 
@@ -52,9 +52,9 @@ class UserController {
       try {
          const response = await this.conn.DeleteUser(email);
 
-         if (!response) return res.status(409).json({msg: 'user not deleted'});
+         if (!response) return res.status(409).json({msg: 'User not deleted'});
 
-         return res.json({msg: 'user deleted'});
+         return res.json({msg: 'User deleted'});
       } 
       catch (error: any) {
          Log.info(error);
@@ -184,7 +184,7 @@ class UserController {
 
          if (!response) return res.status(400).json({msg: 'error removing connection'});
 
-         return res.json({payload: 'connection added'});
+         return res.json({payload: 'Connection added'});
       }
       catch (error: any) {
          Log.error(error);
