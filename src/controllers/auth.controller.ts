@@ -24,7 +24,6 @@ class AuthController {
       const { email } = req.body;
 
       try {
-
          const response = await this.conn.GetUser(email);
 
          if (response.length <= 0) return res.status(400).json({msg: 'User not registered'});
