@@ -8,7 +8,9 @@
     "test": "mocha --require ts-node/register --watch-extensions ts src/__tests__/**/*.ts",
     "start": "NODE_ENV=prod ts-node src/bin/server.ts | bunyan -o short",
     "dev": "NODE_ENV=dev ts-node-dev --respawn src/bin/server.ts | bunyan -o short",
-    "build": "tsc"
+    "build": "tsc",
+    "deploy": "NODE_ENV=prod pm2 start src/bin/server.ts --watch | bunyan -o short",
+    "pretest": "NODE_ENV=dev node public/bin/server.js | bunyan -o short"
   },
   "keywords": [],
   "author": "",
@@ -43,6 +45,7 @@
     "ip": "^1.1.8",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.10",
+    "pm2": "^5.2.0",
     "sharp": "^0.30.3",
     "ts-node": "^10.8.1",
     "typescript": "^4.6.3",
