@@ -34,14 +34,14 @@ class MongoConnection implements DatabaseType {
          return [response[0]._doc];
    }
 
-   async GetRandomUser(email: string): Promise<UserType> {
+   async GetRandomUser(email: string, limit: number): Promise<UserType[]> {
 
          const response = await UserModel.aggregate([
             {$match: {email: {$ne: email}}},
-            {$sample: {size: 1}}
+            {$sample: {size: limit}}
          ]);
 
-         return response[0];
+         return response;
 
 
          // const total = await UserModel.countDocuments();
@@ -146,7 +146,6 @@ class MongoConnection implements DatabaseType {
       const response = await UserModel.findOne({email: email});
       return response.profileImg;
    }
-
 
 
 

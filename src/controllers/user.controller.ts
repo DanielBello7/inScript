@@ -116,22 +116,28 @@ class UserController {
    }
 
    GetRandomConnection = async (req: RequestInterface, res: Response) => {
+      const limit = parseInt(req.query.limit as string);
+
       try {
-         const response = await this.conn.GetRandomUser(req.user.email);
+         const response = await this.conn.GetRandomUser(req.user.email, limit?limit:1);
 
-         const { 
-            comments, 
-            createdAt,
-            likedPosts,
-            repostedPosts, 
-            uploads, 
-            updatedAt,
-            posts,
-            password, 
-            ...responseUser 
-         } = response;
+         const result = response.map((user) => {
+            const { 
+               comments, 
+               createdAt,
+               likedPosts,
+               repostedPosts, 
+               uploads, 
+               updatedAt,
+               posts,
+               password, 
+               ...responseUser 
+            } = user;
 
-         return res.json({payload: responseUser});
+            return responseUser;
+         });
+
+         return res.json({payload: result});
 
       } catch (error: any) {
          Log.info(error);

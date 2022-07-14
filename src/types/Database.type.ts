@@ -23,7 +23,7 @@ export type PaginatedResponse = {
 export type DatabaseType = {
      // Users
      GetUser: (email: string) => Promise<UserType[]>,
-     GetRandomUser: (email: string) => Promise<UserType>,
+     GetRandomUser: (email: string, limit: number) => Promise<UserType[]>,
      GetUsers: (page: number, limit: number) => Promise<PaginatedResponse>,
      CreateUser: (user: NewUser) => Promise<UserType | false>,
      ModifyUser: (email: string, details: ModifyDataType) => Promise<boolean>,
