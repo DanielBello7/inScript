@@ -23,7 +23,7 @@ function ServerApp(conn: DatabaseType) {
      const app: Application = express();
 
      // list of accepted domain names
-     const whiteList = ['http://localhost:3000', 'http://192.168.0.131:3000', "https://inscript-connect.web.app"];
+     const whiteList = ["https://inscript-connect.web.app"];
 
      // middlewares
      app.use(cors({
