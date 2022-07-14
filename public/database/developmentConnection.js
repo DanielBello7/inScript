@@ -57,7 +57,7 @@ class DevelopmentAPI {
     GetRandomUser(email) {
         return __awaiter(this, void 0, void 0, function* () {
             // const selectedUser = this.users.filter(user => user.email === id);
-            return {};
+            return [];
         });
     }
     CreateUser(user) {
