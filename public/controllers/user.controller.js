@@ -107,10 +107,14 @@ class UserController {
             }
         });
         this.GetRandomConnection = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const limit = parseInt(req.query.limit);
             try {
-                const response = yield this.conn.GetRandomUser(req.user.email);
-                const { comments, createdAt, likedPosts, repostedPosts, uploads, updatedAt, posts, password } = response, responseUser = __rest(response, ["comments", "createdAt", "likedPosts", "repostedPosts", "uploads", "updatedAt", "posts", "password"]);
-                return res.json({ payload: responseUser });
+                const response = yield this.conn.GetRandomUser(req.user.email, limit ? limit : 1);
+                const result = response.map((user) => {
+                    const { comments, createdAt, likedPosts, repostedPosts, uploads, updatedAt, posts, password } = user, responseUser = __rest(user, ["comments", "createdAt", "likedPosts", "repostedPosts", "uploads", "updatedAt", "posts", "password"]);
+                    return responseUser;
+                });
+                return res.json({ payload: result });
             }
             catch (error) {
                 bunyan_config_1.default.info(error);

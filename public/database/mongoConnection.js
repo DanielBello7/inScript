@@ -45,13 +45,13 @@ class MongoConnection {
             return [response[0]._doc];
         });
     }
-    GetRandomUser(email) {
+    GetRandomUser(email, limit) {
         return __awaiter(this, void 0, void 0, function* () {
             const response = yield User_models_1.default.aggregate([
                 { $match: { email: { $ne: email } } },
-                { $sample: { size: 1 } }
+                { $sample: { size: limit } }
             ]);
-            return response[0];
+            return response;
             // const total = await UserModel.countDocuments();
             // const random = Math.floor(Math.random() * total);
             // const response = await UserModel.findOne({email: {$ne: email}}).skip(random);
